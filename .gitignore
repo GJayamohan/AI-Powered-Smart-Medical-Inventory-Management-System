@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.local
+*.key
+
+# Data (downloaded by scripts/download_datasets.py - never commit raw data)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Trained model binaries (regenerate with training scripts)
+artifacts/models/*
+!artifacts/models/.gitkeep
+*.h5
+*.keras
+*.pkl
+*.joblib
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
