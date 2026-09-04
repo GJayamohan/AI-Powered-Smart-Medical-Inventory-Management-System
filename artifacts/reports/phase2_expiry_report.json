@@ -1,0 +1,15 @@
+{
+  "stores_simulated": 8,
+  "medicines": 22,
+  "batches_total": 2921,
+  "batches_expired": 2275,
+  "batches_with_waste": 210,
+  "units_received": 1105630,
+  "units_wasted": 35664,
+  "waste_pct": 3.23,
+  "value_wasted_rupees": 928860.2,
+  "observations": 3824,
+  "unique_batches_in_dataset": 877,
+  "positive_rate": 0.4393,
+  "note": "Consumption is real pharmacy POS data; batch and expiry metadata is simulated."
+}

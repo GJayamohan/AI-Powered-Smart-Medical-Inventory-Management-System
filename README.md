@@ -47,6 +47,12 @@ python scripts/check_environment.py
 
 This checks the Python version, every pinned dependency, live reachability of all four datasets, and that Keras can build and run a model.
 
+Build every dataset from scratch (downloads ~1.5 MB, takes a few minutes):
+
+```bash
+python scripts/download_datasets.py && python scripts/prepare_datasets.py && python scripts/build_expiry_dataset.py && python scripts/eda.py
+```
+
 ---
 
 ## Project structure
@@ -82,8 +88,8 @@ MMS/
 | Phase | Deliverable | Status |
 |---|---|---|
 | 1. Research | Dataset survey, system design, scaffold, pinned deps | **Done** |
-| 2. Dataset | Download, clean, augment; EDA | Next |
-| 3. ML | Train Keras models + scikit-learn comparison | |
+| 2. Dataset | Download, clean, augment; expiry dataset; EDA | **Done** |
+| 3. ML | Train Keras models + scikit-learn comparison | Next |
 | 4. Treatment DB | 41 diseases to medication and specialist | |
 | 5. Backend | Flask app, blueprints, auth | |
 | 6. Database | SQLAlchemy models, seed data, FEFO | |

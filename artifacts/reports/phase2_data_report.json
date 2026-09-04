@@ -1,0 +1,136 @@
+{
+  "symptoms": {
+    "raw_rows": 4920,
+    "unique_patterns": 304,
+    "duplicate_pct": 93.82,
+    "n_symptoms": 131,
+    "n_diseases": 41,
+    "dropped_symptoms": [
+      "fluid_overload"
+    ],
+    "patterns": {
+      "train": 197,
+      "val": 53,
+      "test": 54
+    },
+    "augmented": {
+      "train": 7880,
+      "val": 795,
+      "test": 810
+    },
+    "test_rows_leaked_into_train": 10
+  },
+  "diabetes": {
+    "rows": 768,
+    "outcome_balance": {
+      "0": 500,
+      "1": 268
+    },
+    "zeros_marked_missing": {
+      "Glucose": 5,
+      "BloodPressure": 35,
+      "SkinThickness": 227,
+      "Insulin": 374,
+      "BMI": 11
+    }
+  },
+  "heart": {
+    "raw_rows": 303,
+    "clean_rows": 302,
+    "duplicates_dropped": 1,
+    "ca_placeholder_4": 4,
+    "thal_placeholder_0": 2,
+    "target_balance": {
+      "1": 165,
+      "0": 138
+    }
+  },
+  "sales": {
+    "rows": 2106,
+    "date_start": "2014-01-02",
+    "date_end": "2019-10-08",
+    "missing_days": 0,
+    "drug_groups": [
+      {
+        "atc_group": "M01AB",
+        "meaning": "Anti-inflammatory, acetic acid derivatives (e.g. diclofenac)",
+        "mean_units_per_day": 5.03,
+        "std": 2.74,
+        "zero_sale_days": 40,
+        "seasonality_ratio": 1.15,
+        "peak_month": 8,
+        "trough_month": 6
+      },
+      {
+        "atc_group": "M01AE",
+        "meaning": "Anti-inflammatory, propionic acid derivatives (e.g. ibuprofen)",
+        "mean_units_per_day": 3.9,
+        "std": 2.13,
+        "zero_sale_days": 36,
+        "seasonality_ratio": 1.31,
+        "peak_month": 2,
+        "trough_month": 6
+      },
+      {
+        "atc_group": "N02BA",
+        "meaning": "Salicylic acid derivatives (e.g. aspirin)",
+        "mean_units_per_day": 3.88,
+        "std": 2.38,
+        "zero_sale_days": 78,
+        "seasonality_ratio": 1.39,
+        "peak_month": 2,
+        "trough_month": 9
+      },
+      {
+        "atc_group": "N02BE",
+        "meaning": "Pyrazolones and anilides (e.g. paracetamol)",
+        "mean_units_per_day": 29.92,
+        "std": 15.59,
+        "zero_sale_days": 26,
+        "seasonality_ratio": 2.15,
+        "peak_month": 10,
+        "trough_month": 7
+      },
+      {
+        "atc_group": "N05B",
+        "meaning": "Anxiolytics",
+        "mean_units_per_day": 8.85,
+        "std": 5.61,
+        "zero_sale_days": 43,
+        "seasonality_ratio": 1.47,
+        "peak_month": 1,
+        "trough_month": 5
+      },
+      {
+        "atc_group": "N05C",
+        "meaning": "Hypnotics and sedatives",
+        "mean_units_per_day": 0.59,
+        "std": 1.09,
+        "zero_sale_days": 1430,
+        "seasonality_ratio": 1.65,
+        "peak_month": 1,
+        "trough_month": 4
+      },
+      {
+        "atc_group": "R03",
+        "meaning": "Drugs for obstructive airway disease (asthma, COPD)",
+        "mean_units_per_day": 5.51,
+        "std": 6.43,
+        "zero_sale_days": 484,
+        "seasonality_ratio": 2.68,
+        "peak_month": 12,
+        "trough_month": 7
+      },
+      {
+        "atc_group": "R06",
+        "meaning": "Antihistamines for systemic use",
+        "mean_units_per_day": 2.9,
+        "std": 2.42,
+        "zero_sale_days": 256,
+        "seasonality_ratio": 3.69,
+        "peak_month": 5,
+        "trough_month": 12
+      }
+    ]
+  }
+}
