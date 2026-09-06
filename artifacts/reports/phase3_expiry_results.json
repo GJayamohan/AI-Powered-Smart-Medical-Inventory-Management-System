@@ -1,0 +1,93 @@
+{
+  "task": "expiry_risk_prediction",
+  "features": [
+    "days_to_expiry",
+    "qty_remaining",
+    "pct_batch_remaining",
+    "total_stock_all_batches",
+    "usage_rate_7d",
+    "usage_rate_30d",
+    "usage_rate_90d",
+    "usage_trend",
+    "days_of_cover",
+    "cover_ratio",
+    "shelf_life_days",
+    "pct_life_remaining",
+    "unit_cost",
+    "month",
+    "prescription_required"
+  ],
+  "splits": {
+    "train": 2647,
+    "val": 628,
+    "test": 549,
+    "train_batches": 613,
+    "test_batches": 132
+  },
+  "positive_rate": {
+    "train": 0.4484,
+    "test": 0.4098
+  },
+  "risk_config": {
+    "threshold": 0.83,
+    "buckets": {
+      "SAFE": [
+        0,
+        25
+      ],
+      "WATCH": [
+        26,
+        50
+      ],
+      "HIGH": [
+        51,
+        75
+      ],
+      "CRITICAL": [
+        76,
+        100
+      ]
+    }
+  },
+  "results": [
+    {
+      "accuracy": 0.8542805100182149,
+      "precision": 0.8111587982832618,
+      "recall": 0.84,
+      "f1": 0.8253275109170306,
+      "roc_auc": 0.9358161865569272,
+      "model": "Deep Neural Network",
+      "train_seconds": 30.2,
+      "threshold": 0.83,
+      "reg_mae": 983.15,
+      "reg_rmse": 4602.06
+    },
+    {
+      "accuracy": 0.9234972677595629,
+      "precision": 0.8734693877551021,
+      "recall": 0.9511111111111111,
+      "f1": 0.9106382978723404,
+      "roc_auc": 0.9727846364883402,
+      "model": "Logistic Regression",
+      "train_seconds": 0.0
+    },
+    {
+      "accuracy": 0.941712204007286,
+      "precision": 0.9213973799126638,
+      "recall": 0.9377777777777778,
+      "f1": 0.9295154185022027,
+      "roc_auc": 0.9810562414266119,
+      "model": "Random Forest",
+      "train_seconds": 1.2
+    },
+    {
+      "accuracy": 0.936247723132969,
+      "precision": 0.905982905982906,
+      "recall": 0.9422222222222222,
+      "f1": 0.9237472766884531,
+      "roc_auc": 0.9784087791495198,
+      "model": "Gradient Boosting",
+      "train_seconds": 3.3
+    }
+  ]
+}

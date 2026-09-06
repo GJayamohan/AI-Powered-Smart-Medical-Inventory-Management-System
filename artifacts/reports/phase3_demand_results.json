@@ -1,0 +1,373 @@
+{
+  "task": "demand_forecasting_lstm",
+  "config": {
+    "window": 60,
+    "horizon": 1,
+    "groups": [
+      "M01AB",
+      "M01AE",
+      "N02BA",
+      "N02BE",
+      "N05B",
+      "N05C",
+      "R03",
+      "R06"
+    ],
+    "feature_columns": [
+      "sales",
+      "roll_7",
+      "roll_30",
+      "dow",
+      "month_sin",
+      "month_cos"
+    ],
+    "train_end": "2017-12-31",
+    "val_end": "2018-12-31"
+  },
+  "results": {
+    "M01AB": {
+      "group": "M01AB",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 2.2094,
+          "rmse": 2.886,
+          "mape": 68.59,
+          "model": "LSTM",
+          "train_seconds": 39.5,
+          "epochs_run": 13
+        },
+        {
+          "mae": 2.3788,
+          "rmse": 3.0472,
+          "mape": 74.29,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 2.2494,
+          "rmse": 2.9014,
+          "mape": 72.74,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 2.3536,
+          "rmse": 2.9737,
+          "mape": 74.96,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 2.2434,
+          "rmse": 2.8948,
+          "mape": 74.05,
+          "model": "Random Forest",
+          "train_seconds": 11.3
+        }
+      ]
+    },
+    "M01AE": {
+      "group": "M01AE",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 1.6953,
+          "rmse": 2.2505,
+          "mape": 101.35,
+          "model": "LSTM",
+          "train_seconds": 72.3,
+          "epochs_run": 23
+        },
+        {
+          "mae": 1.6568,
+          "rmse": 2.174,
+          "mape": 99.78,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 1.7572,
+          "rmse": 2.2955,
+          "mape": 102.62,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 1.8592,
+          "rmse": 2.4452,
+          "mape": 112.36,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 1.7859,
+          "rmse": 2.292,
+          "mape": 112.55,
+          "model": "Random Forest",
+          "train_seconds": 14.7
+        }
+      ]
+    },
+    "N02BA": {
+      "group": "N02BA",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 1.5556,
+          "rmse": 1.9549,
+          "mape": 112.4,
+          "model": "LSTM",
+          "train_seconds": 49.3,
+          "epochs_run": 15
+        },
+        {
+          "mae": 1.5986,
+          "rmse": 2.0429,
+          "mape": 105.0,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 1.4952,
+          "rmse": 1.9287,
+          "mape": 100.47,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 1.6606,
+          "rmse": 2.1361,
+          "mape": 96.76,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 1.5539,
+          "rmse": 1.9966,
+          "mape": 106.45,
+          "model": "Random Forest",
+          "train_seconds": 13.1
+        }
+      ]
+    },
+    "N02BE": {
+      "group": "N02BE",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 8.7692,
+          "rmse": 12.0505,
+          "mape": 33.88,
+          "model": "LSTM",
+          "train_seconds": 101.4,
+          "epochs_run": 40
+        },
+        {
+          "mae": 9.0563,
+          "rmse": 12.206,
+          "mape": 35.03,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 10.0442,
+          "rmse": 13.7169,
+          "mape": 38.81,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 9.5392,
+          "rmse": 12.4589,
+          "mape": 37.93,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 8.9058,
+          "rmse": 12.177,
+          "mape": 35.73,
+          "model": "Random Forest",
+          "train_seconds": 14.7
+        }
+      ]
+    },
+    "N05B": {
+      "group": "N05B",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 3.3613,
+          "rmse": 4.2659,
+          "mape": 62.39,
+          "model": "LSTM",
+          "train_seconds": 73.7,
+          "epochs_run": 27
+        },
+        {
+          "mae": 3.4565,
+          "rmse": 4.4146,
+          "mape": 63.15,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 3.319,
+          "rmse": 4.2585,
+          "mape": 62.71,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 3.6676,
+          "rmse": 4.6978,
+          "mape": 65.61,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 3.22,
+          "rmse": 4.2013,
+          "mape": 57.37,
+          "model": "Random Forest",
+          "train_seconds": 10.1
+        }
+      ]
+    },
+    "N05C": {
+      "group": "N05C",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 0.836,
+          "rmse": 1.1173,
+          "mape": 60.29,
+          "model": "LSTM",
+          "train_seconds": 46.1,
+          "epochs_run": 18
+        },
+        {
+          "mae": 0.8993,
+          "rmse": 1.1746,
+          "mape": 58.74,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 0.8605,
+          "rmse": 1.1287,
+          "mape": 50.16,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 0.8657,
+          "rmse": 1.1562,
+          "mape": 62.08,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 0.8876,
+          "rmse": 1.1311,
+          "mape": 52.52,
+          "model": "Random Forest",
+          "train_seconds": 8.6
+        }
+      ]
+    },
+    "R03": {
+      "group": "R03",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 5.1183,
+          "rmse": 7.6962,
+          "mape": 106.29,
+          "model": "LSTM",
+          "train_seconds": 66.3,
+          "epochs_run": 21
+        },
+        {
+          "mae": 5.5305,
+          "rmse": 7.8331,
+          "mape": 130.45,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 5.5797,
+          "rmse": 7.862,
+          "mape": 127.91,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 5.7384,
+          "rmse": 8.2513,
+          "mape": 133.62,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 6.078,
+          "rmse": 7.9344,
+          "mape": 161.68,
+          "model": "Random Forest",
+          "train_seconds": 11.0
+        }
+      ]
+    },
+    "R06": {
+      "group": "R06",
+      "train_size": 1400,
+      "test_size": 281,
+      "results": [
+        {
+          "mae": 1.7658,
+          "rmse": 2.3551,
+          "mape": 57.36,
+          "model": "LSTM",
+          "train_seconds": 47.4,
+          "epochs_run": 13
+        },
+        {
+          "mae": 1.8166,
+          "rmse": 2.3927,
+          "mape": 60.72,
+          "model": "MA-7d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 1.8303,
+          "rmse": 2.4092,
+          "mape": 61.09,
+          "model": "MA-30d",
+          "train_seconds": 0.0
+        },
+        {
+          "mae": 1.8983,
+          "rmse": 2.5177,
+          "mape": 62.09,
+          "model": "Linear Regression",
+          "train_seconds": 0.1
+        },
+        {
+          "mae": 2.0023,
+          "rmse": 2.5744,
+          "mape": 66.15,
+          "model": "Random Forest",
+          "train_seconds": 9.4
+        }
+      ]
+    }
+  }
+}
