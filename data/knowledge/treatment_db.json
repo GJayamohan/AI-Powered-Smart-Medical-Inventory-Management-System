@@ -1,0 +1,1451 @@
+{
+  "version": "1.0",
+  "disclaimer": "DISCLAIMER: This system provides educational decision-support information only. It is NOT a substitute for professional medical diagnosis or treatment. Always consult a qualified healthcare professional before starting, stopping, or changing any medication. In case of emergency, call your local emergency number or go to the nearest emergency room immediately.",
+  "emergency_symptoms": [
+    "chest_pain",
+    "weakness_of_one_body_side",
+    "slurred_speech",
+    "altered_sensorium",
+    "coma",
+    "stomach_bleeding",
+    "acute_liver_failure"
+  ],
+  "diseases": {
+    "(vertigo) Paroymsal  Positional Vertigo": {
+      "name": "(vertigo) Paroymsal  Positional Vertigo",
+      "description": "Benign paroxysmal positional vertigo (BPPV) is one of the most common causes of vertigo — the sudden sensation that you're spinning or that the inside of your head is spinning. Benign paroxysmal positional vertigo causes brief episodes of mild to intense dizziness.",
+      "medication_classes": [
+        "Antihistamines (Meclizine)",
+        "Benzodiazepines (short-term)",
+        "Antiemetics"
+      ],
+      "first_line": "Meclizine 25mg as needed",
+      "specialist": "ENT Specialist / Neurologist",
+      "department": "Neurology / ENT",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Epley maneuver exercises",
+        "Avoid sudden head movements",
+        "Stay hydrated"
+      ],
+      "red_flags": [
+        "Severe headache with vertigo",
+        "Loss of consciousness",
+        "Slurred speech"
+      ],
+      "precautions": [
+        "lie down",
+        "avoid sudden change in body",
+        "avoid abrupt head movment",
+        "relax"
+      ]
+    },
+    "AIDS": {
+      "name": "AIDS",
+      "description": "Acquired immunodeficiency syndrome (AIDS) is a chronic, potentially life-threatening condition caused by the human immunodeficiency virus (HIV). By damaging your immune system, HIV interferes with your body's ability to fight infection and disease.",
+      "medication_classes": [
+        "Antiretroviral therapy (ART)",
+        "NRTIs",
+        "NNRTIs",
+        "Protease inhibitors"
+      ],
+      "first_line": "Tenofovir + Lamivudine + Efavirenz (TLE regimen)",
+      "specialist": "Infectious Disease Specialist",
+      "department": "Infectious Diseases",
+      "urgency": "high",
+      "lifestyle": [
+        "Strict ART adherence",
+        "Regular CD4 monitoring",
+        "Safe practices",
+        "Balanced nutrition"
+      ],
+      "red_flags": [
+        "Rapid weight loss",
+        "Persistent fever >1 month",
+        "Opportunistic infections"
+      ],
+      "precautions": [
+        "avoid open cuts",
+        "wear ppe if possible",
+        "consult doctor",
+        "follow up"
+      ]
+    },
+    "Acne": {
+      "name": "Acne",
+      "description": "Acne vulgaris is the formation of comedones, papules, pustules, nodules, and/or cysts as a result of obstruction and inflammation of pilosebaceous units (hair follicles and their accompanying sebaceous gland). Acne develops on the face and upper trunk. It most often affects adolescents.",
+      "medication_classes": [
+        "Topical retinoids",
+        "Benzoyl peroxide",
+        "Topical antibiotics",
+        "Oral antibiotics (severe)"
+      ],
+      "first_line": "Benzoyl peroxide 2.5-5% topical gel",
+      "specialist": "Dermatologist",
+      "department": "Dermatology",
+      "urgency": "low",
+      "lifestyle": [
+        "Gentle face washing twice daily",
+        "Non-comedogenic products",
+        "Avoid picking/squeezing",
+        "Balanced diet"
+      ],
+      "red_flags": [
+        "Severe cystic acne",
+        "Scarring",
+        "Signs of hormonal imbalance"
+      ],
+      "precautions": [
+        "bath twice",
+        "avoid fatty spicy food",
+        "drink plenty of water",
+        "avoid too many products"
+      ]
+    },
+    "Alcoholic hepatitis": {
+      "name": "Alcoholic hepatitis",
+      "description": "Alcoholic hepatitis is a diseased, inflammatory condition of the liver caused by heavy alcohol consumption over an extended period of time. It's also aggravated by binge drinking and ongoing alcohol use. If you develop this condition, you must stop drinking alcohol",
+      "medication_classes": [
+        "Corticosteroids (Prednisolone)",
+        "Pentoxifylline",
+        "Hepatoprotectants",
+        "Vitamin supplements"
+      ],
+      "first_line": "Prednisolone 40mg/day for 28 days (if Maddrey score >= 32)",
+      "specialist": "Hepatologist / Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "high",
+      "lifestyle": [
+        "Complete alcohol abstinence",
+        "High-calorie high-protein diet",
+        "Vitamin B/folate supplementation"
+      ],
+      "red_flags": [
+        "Jaundice worsening",
+        "Hepatic encephalopathy",
+        "GI bleeding",
+        "Ascites"
+      ],
+      "precautions": [
+        "stop alcohol consumption",
+        "consult doctor",
+        "medication",
+        "follow up"
+      ]
+    },
+    "Allergy": {
+      "name": "Allergy",
+      "description": "An allergy is an immune system response to a foreign substance that's not typically harmful to your body.They can include certain foods, pollen, or pet dander. Your immune system's job is to keep you healthy by fighting harmful pathogens.",
+      "medication_classes": [
+        "Antihistamines (Cetirizine, Loratadine)",
+        "Nasal corticosteroids",
+        "Decongestants",
+        "Epinephrine (anaphylaxis)"
+      ],
+      "first_line": "Cetirizine 10mg or Loratadine 10mg daily",
+      "specialist": "Allergist / Immunologist",
+      "department": "Allergy & Immunology",
+      "urgency": "low",
+      "lifestyle": [
+        "Identify and avoid allergens",
+        "Keep antihistamines available",
+        "Use air purifiers"
+      ],
+      "red_flags": [
+        "Difficulty breathing",
+        "Swelling of throat/tongue",
+        "Anaphylaxis signs"
+      ],
+      "precautions": [
+        "apply calamine",
+        "cover area with bandage",
+        "use ice to compress itching"
+      ]
+    },
+    "Arthritis": {
+      "name": "Arthritis",
+      "description": "Arthritis is the swelling and tenderness of one or more of your joints. The main symptoms of arthritis are joint pain and stiffness, which typically worsen with age. The most common types of arthritis are osteoarthritis and rheumatoid arthritis.",
+      "medication_classes": [
+        "NSAIDs (Ibuprofen, Diclofenac)",
+        "DMARDs (Methotrexate)",
+        "Corticosteroids",
+        "Analgesics"
+      ],
+      "first_line": "Ibuprofen 400mg three times daily with food",
+      "specialist": "Rheumatologist",
+      "department": "Rheumatology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Regular low-impact exercise",
+        "Weight management",
+        "Hot/cold therapy",
+        "Joint protection techniques"
+      ],
+      "red_flags": [
+        "Sudden joint swelling with fever",
+        "Joint deformity",
+        "Inability to move joint"
+      ],
+      "precautions": [
+        "exercise",
+        "use hot and cold therapy",
+        "try acupuncture",
+        "massage"
+      ]
+    },
+    "Bronchial Asthma": {
+      "name": "Bronchial Asthma",
+      "description": "Bronchial asthma is a medical condition which causes the airway path of the lungs to swell and narrow. Due to this swelling, the air path produces excess mucus making it hard to breathe, which results in coughing, short breath, and wheezing. The disease is chronic and interferes with daily working.",
+      "medication_classes": [
+        "Inhaled corticosteroids (Budesonide)",
+        "Short-acting beta-agonists (Salbutamol)",
+        "Long-acting beta-agonists",
+        "Leukotriene modifiers"
+      ],
+      "first_line": "Salbutamol inhaler (rescue) + Budesonide inhaler (maintenance)",
+      "specialist": "Pulmonologist",
+      "department": "Pulmonology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Avoid triggers (dust, smoke, cold air)",
+        "Use peak flow meter",
+        "Carry rescue inhaler always",
+        "Asthma action plan"
+      ],
+      "red_flags": [
+        "Severe breathlessness at rest",
+        "Blue lips/fingers",
+        "Cannot speak full sentences",
+        "Peak flow < 50%"
+      ],
+      "precautions": [
+        "switch to loose cloothing",
+        "take deep breaths",
+        "get away from trigger",
+        "seek help"
+      ]
+    },
+    "Cervical spondylosis": {
+      "name": "Cervical spondylosis",
+      "description": "Cervical spondylosis is a general term for age-related wear and tear affecting the spinal disks in your neck. As the disks dehydrate and shrink, signs of osteoarthritis develop, including bony projections along the edges of bones (bone spurs).",
+      "medication_classes": [
+        "NSAIDs (Diclofenac)",
+        "Muscle relaxants (Tizanidine)",
+        "Analgesics (Paracetamol)",
+        "Neuropathic pain agents (Gabapentin)"
+      ],
+      "first_line": "Diclofenac 50mg twice daily + Paracetamol 500mg",
+      "specialist": "Orthopedic Surgeon / Neurologist",
+      "department": "Orthopedics",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Neck exercises and stretches",
+        "Proper posture",
+        "Ergonomic workspace",
+        "Avoid prolonged neck flexion"
+      ],
+      "red_flags": [
+        "Weakness in arms/legs",
+        "Loss of bladder/bowel control",
+        "Difficulty walking"
+      ],
+      "precautions": [
+        "use heating pad or cold pack",
+        "exercise",
+        "take otc pain reliver",
+        "consult doctor"
+      ]
+    },
+    "Chicken pox": {
+      "name": "Chicken pox",
+      "description": "Chickenpox is a highly contagious disease caused by the varicella-zoster virus (VZV). It can cause an itchy, blister-like rash. The rash first appears on the chest, back, and face, and then spreads over the entire body, causing between 250 and 500 itchy blisters.",
+      "medication_classes": [
+        "Antivirals (Acyclovir)",
+        "Antihistamines (Calamine)",
+        "Analgesics (Paracetamol)",
+        "Topical lotions"
+      ],
+      "first_line": "Acyclovir 800mg five times daily for 7 days (adults)",
+      "specialist": "General Physician / Pediatrician",
+      "department": "General Medicine",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Isolate patient for 5-7 days",
+        "Calamine lotion for itching",
+        "Keep nails short",
+        "Adequate rest and fluids"
+      ],
+      "red_flags": [
+        "High persistent fever",
+        "Difficulty breathing",
+        "Severe rash near eyes",
+        "Confusion or drowsiness"
+      ],
+      "precautions": [
+        "use neem in bathing ",
+        "consume neem leaves",
+        "take vaccine",
+        "avoid public places"
+      ]
+    },
+    "Chronic cholestasis": {
+      "name": "Chronic cholestasis",
+      "description": "Chronic cholestatic diseases, whether occurring in infancy, childhood or adulthood, are characterized by defective bile acid transport from the liver to the intestine, which is caused by primary damage to the biliary epithelium in most cases",
+      "medication_classes": [
+        "Ursodeoxycholic acid (UDCA)",
+        "Cholestyramine",
+        "Fat-soluble vitamin supplements",
+        "Antihistamines (for pruritus)"
+      ],
+      "first_line": "Ursodeoxycholic acid 13-15 mg/kg/day",
+      "specialist": "Hepatologist / Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Low-fat diet",
+        "Avoid alcohol",
+        "Regular liver function monitoring",
+        "Vitamin A/D/E/K supplementation"
+      ],
+      "red_flags": [
+        "Deep jaundice",
+        "Fever with rigors",
+        "Right upper quadrant pain",
+        "Dark urine"
+      ],
+      "precautions": [
+        "cold baths",
+        "anti itch medicine",
+        "consult doctor",
+        "eat healthy"
+      ]
+    },
+    "Common Cold": {
+      "name": "Common Cold",
+      "description": "The common cold is a viral infection of your nose and throat (upper respiratory tract). It's usually harmless, although it might not feel that way. Many types of viruses can cause a common cold.",
+      "medication_classes": [
+        "Decongestants (Pseudoephedrine)",
+        "Antihistamines (Chlorpheniramine)",
+        "Analgesics (Paracetamol)",
+        "Cough suppressants"
+      ],
+      "first_line": "Paracetamol 500mg + rest + fluids (symptomatic)",
+      "specialist": "General Physician",
+      "department": "General Medicine",
+      "urgency": "low",
+      "lifestyle": [
+        "Rest adequately",
+        "Drink warm fluids",
+        "Steam inhalation",
+        "Hand hygiene to prevent spread"
+      ],
+      "red_flags": [
+        "Fever > 103F for > 3 days",
+        "Severe sinus pain",
+        "Difficulty breathing",
+        "Symptoms > 10 days"
+      ],
+      "precautions": [
+        "drink vitamin c rich drinks",
+        "take vapour",
+        "avoid cold food",
+        "keep fever in check"
+      ]
+    },
+    "Dengue": {
+      "name": "Dengue",
+      "description": "an acute infectious disease caused by a flavivirus (species Dengue virus of the genus Flavivirus), transmitted by aedes mosquitoes, and characterized by headache, severe joint pain, and a rash. — called also breakbone fever, dengue fever.",
+      "medication_classes": [
+        "Analgesics (Paracetamol ONLY)",
+        "Oral rehydration salts",
+        "IV fluids (severe)",
+        "Platelet monitoring"
+      ],
+      "first_line": "Paracetamol 500mg (NO aspirin/ibuprofen - bleeding risk)",
+      "specialist": "Infectious Disease Specialist",
+      "department": "Infectious Diseases / General Medicine",
+      "urgency": "high",
+      "lifestyle": [
+        "Complete bed rest",
+        "Drink plenty of fluids/ORS",
+        "Daily platelet count monitoring",
+        "Mosquito net use"
+      ],
+      "red_flags": [
+        "Severe abdominal pain",
+        "Persistent vomiting",
+        "Bleeding gums/nose",
+        "Platelet < 20,000",
+        "Rapid pulse"
+      ],
+      "precautions": [
+        "drink papaya leaf juice",
+        "avoid fatty spicy food",
+        "keep mosquitos away",
+        "keep hydrated"
+      ]
+    },
+    "Diabetes ": {
+      "name": "Diabetes ",
+      "description": "Diabetes is a disease that occurs when your blood glucose, also called blood sugar, is too high. Blood glucose is your main source of energy and comes from the food you eat. Insulin, a hormone made by the pancreas, helps glucose from food get into your cells to be used for energy.",
+      "medication_classes": [
+        "Metformin",
+        "Sulfonylureas (Glimepiride)",
+        "DPP-4 inhibitors",
+        "Insulin (Type 1 / advanced Type 2)"
+      ],
+      "first_line": "Metformin 500mg twice daily (start low, titrate up)",
+      "specialist": "Endocrinologist / Diabetologist",
+      "department": "Endocrinology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Regular blood glucose monitoring",
+        "Balanced low-sugar diet",
+        "150 min/week moderate exercise",
+        "Foot care",
+        "Annual eye checkup"
+      ],
+      "red_flags": [
+        "Blood glucose > 400 mg/dL",
+        "Diabetic ketoacidosis signs",
+        "Non-healing wounds",
+        "Vision changes"
+      ],
+      "precautions": [
+        "have balanced diet",
+        "exercise",
+        "consult doctor",
+        "follow up"
+      ]
+    },
+    "Dimorphic hemmorhoids(piles)": {
+      "name": "Dimorphic hemmorhoids(piles)",
+      "description": "",
+      "medication_classes": [
+        "Topical analgesics (Lidocaine)",
+        "Stool softeners (Lactulose)",
+        "Flavonoids (Diosmin)",
+        "Topical corticosteroids"
+      ],
+      "first_line": "Lactulose 15ml daily + Diosmin 500mg twice daily + topical cream",
+      "specialist": "General Surgeon / Proctologist",
+      "department": "General Surgery",
+      "urgency": "low",
+      "lifestyle": [
+        "High-fiber diet",
+        "Adequate water intake",
+        "Avoid straining",
+        "Sitz baths",
+        "Regular exercise"
+      ],
+      "red_flags": [
+        "Heavy rectal bleeding",
+        "Severe pain",
+        "Prolapsed hemorrhoids that cannot be pushed back"
+      ],
+      "precautions": [
+        "avoid fatty spicy food",
+        "consume witch hazel",
+        "warm bath with epsom salt",
+        "consume alovera juice"
+      ]
+    },
+    "Drug Reaction": {
+      "name": "Drug Reaction",
+      "description": "An adverse drug reaction (ADR) is an injury caused by taking medication. ADRs may occur following a single dose or prolonged administration of a drug or result from the combination of two or more drugs.",
+      "medication_classes": [
+        "Antihistamines (Cetirizine)",
+        "Corticosteroids (Prednisolone)",
+        "Epinephrine (severe)",
+        "Topical corticosteroids"
+      ],
+      "first_line": "Stop offending drug immediately + Cetirizine 10mg",
+      "specialist": "Allergist / Dermatologist",
+      "department": "Allergy & Immunology",
+      "urgency": "high",
+      "lifestyle": [
+        "Document the drug allergy",
+        "Wear medical alert bracelet",
+        "Inform all healthcare providers",
+        "Carry allergy card"
+      ],
+      "red_flags": [
+        "Difficulty breathing",
+        "Facial/throat swelling",
+        "Stevens-Johnson syndrome signs",
+        "Widespread blistering"
+      ],
+      "precautions": [
+        "stop irritation",
+        "consult nearest hospital",
+        "stop taking drug",
+        "follow up"
+      ]
+    },
+    "Fungal infection": {
+      "name": "Fungal infection",
+      "description": "In humans, fungal infections occur when an invading fungus takes over an area of the body and is too much for the immune system to handle. Fungi can live in the air, soil, water, and plants. There are also some fungi that live naturally in the human body. Like many microbes, there are helpful fungi and harmful fungi.",
+      "medication_classes": [
+        "Topical antifungals (Clotrimazole, Terbinafine)",
+        "Oral antifungals (Fluconazole)",
+        "Antifungal powders"
+      ],
+      "first_line": "Clotrimazole 1% cream twice daily for 2-4 weeks",
+      "specialist": "Dermatologist",
+      "department": "Dermatology",
+      "urgency": "low",
+      "lifestyle": [
+        "Keep affected area dry",
+        "Wear loose cotton clothing",
+        "Avoid sharing towels",
+        "Complete full course of treatment"
+      ],
+      "red_flags": [
+        "Spreading despite treatment",
+        "Fever with skin infection",
+        "Deep tissue involvement"
+      ],
+      "precautions": [
+        "bath twice",
+        "use detol or neem in bathing water",
+        "keep infected area dry",
+        "use clean cloths"
+      ]
+    },
+    "GERD": {
+      "name": "GERD",
+      "description": "Gastroesophageal reflux disease, or GERD, is a digestive disorder that affects the lower esophageal sphincter (LES), the ring of muscle between the esophagus and stomach. Many people, including pregnant women, suffer from heartburn or acid indigestion caused by GERD.",
+      "medication_classes": [
+        "Proton pump inhibitors (Omeprazole, Pantoprazole)",
+        "H2 blockers (Ranitidine)",
+        "Antacids (Aluminum/Magnesium)",
+        "Prokinetics (Domperidone)"
+      ],
+      "first_line": "Omeprazole 20mg once daily before breakfast for 4-8 weeks",
+      "specialist": "Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "low",
+      "lifestyle": [
+        "Avoid spicy/fatty foods",
+        "Eat smaller frequent meals",
+        "No lying down after eating (wait 2-3 hrs)",
+        "Elevate head of bed",
+        "Avoid smoking/alcohol"
+      ],
+      "red_flags": [
+        "Difficulty swallowing",
+        "Unintended weight loss",
+        "Vomiting blood",
+        "Black tarry stools"
+      ],
+      "precautions": [
+        "avoid fatty spicy food",
+        "avoid lying down after eating",
+        "maintain healthy weight",
+        "exercise"
+      ]
+    },
+    "Gastroenteritis": {
+      "name": "Gastroenteritis",
+      "description": "Gastroenteritis is an inflammation of the digestive tract, particularly the stomach, and large and small intestines. Viral and bacterial gastroenteritis are intestinal infections associated with symptoms of diarrhea , abdominal cramps, nausea , and vomiting .",
+      "medication_classes": [
+        "Oral rehydration salts (ORS)",
+        "Antiemetics (Ondansetron)",
+        "Probiotics",
+        "Zinc supplements (children)"
+      ],
+      "first_line": "ORS solution + Ondansetron 4mg if vomiting + bland diet",
+      "specialist": "General Physician / Gastroenterologist",
+      "department": "General Medicine",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Plenty of fluids and ORS",
+        "BRAT diet initially",
+        "Strict hand hygiene",
+        "Avoid dairy temporarily"
+      ],
+      "red_flags": [
+        "Bloody diarrhea",
+        "Signs of severe dehydration",
+        "High fever > 102F",
+        "Symptoms > 3 days"
+      ],
+      "precautions": [
+        "stop eating solid food for while",
+        "try taking small sips of water",
+        "rest",
+        "ease back into eating"
+      ]
+    },
+    "Heart attack": {
+      "name": "Heart attack",
+      "description": "The death of heart muscle due to the loss of blood supply. The loss of blood supply is usually caused by a complete blockage of a coronary artery, one of the arteries that supplies blood to the heart muscle.",
+      "medication_classes": [
+        "Aspirin (immediate)",
+        "Nitroglycerin",
+        "Thrombolytics",
+        "Beta-blockers",
+        "ACE inhibitors",
+        "Anticoagulants"
+      ],
+      "first_line": "EMERGENCY: Aspirin 325mg chewed + call ambulance immediately",
+      "specialist": "Cardiologist",
+      "department": "Cardiology / Emergency Medicine",
+      "urgency": "critical",
+      "lifestyle": [
+        "Cardiac rehabilitation program",
+        "Quit smoking",
+        "Heart-healthy diet",
+        "Stress management",
+        "Regular follow-up"
+      ],
+      "red_flags": [
+        "Chest pain/pressure",
+        "Pain radiating to arm/jaw",
+        "Shortness of breath",
+        "Cold sweat",
+        "Nausea"
+      ],
+      "precautions": [
+        "call ambulance",
+        "chew or swallow asprin",
+        "keep calm"
+      ]
+    },
+    "Hepatitis B": {
+      "name": "Hepatitis B",
+      "description": "Hepatitis B is an infection of your liver. It can cause scarring of the organ, liver failure, and cancer. It can be fatal if it isn't treated. It's spread when people come in contact with the blood, open sores, or body fluids of someone who has the hepatitis B virus.",
+      "medication_classes": [
+        "Antivirals (Entecavir, Tenofovir)",
+        "Pegylated Interferon",
+        "Hepatoprotectants"
+      ],
+      "first_line": "Entecavir 0.5mg daily or Tenofovir 300mg daily",
+      "specialist": "Hepatologist / Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "high",
+      "lifestyle": [
+        "Complete alcohol avoidance",
+        "Vaccination for contacts",
+        "Safe practices",
+        "Regular HBV DNA monitoring"
+      ],
+      "red_flags": [
+        "Severe jaundice",
+        "Hepatic encephalopathy",
+        "Ascites",
+        "Liver failure signs"
+      ],
+      "precautions": [
+        "consult nearest hospital",
+        "vaccination",
+        "eat healthy",
+        "medication"
+      ]
+    },
+    "Hepatitis C": {
+      "name": "Hepatitis C",
+      "description": "Inflammation of the liver due to the hepatitis C virus (HCV), which is usually spread via blood transfusion (rare), hemodialysis, and needle sticks. The damage hepatitis C does to the liver can lead to cirrhosis and its complications as well as cancer.",
+      "medication_classes": [
+        "Direct-acting antivirals (Sofosbuvir, Ledipasvir)",
+        "Ribavirin (combination)",
+        "Hepatoprotectants"
+      ],
+      "first_line": "Sofosbuvir 400mg + Ledipasvir 90mg daily for 12 weeks",
+      "specialist": "Hepatologist / Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "high",
+      "lifestyle": [
+        "Avoid alcohol completely",
+        "Regular liver function tests",
+        "Avoid sharing personal items",
+        "Nutrition counseling"
+      ],
+      "red_flags": [
+        "Progressive jaundice",
+        "Liver cirrhosis signs",
+        "Hepatic encephalopathy"
+      ],
+      "precautions": [
+        "Consult nearest hospital",
+        "vaccination",
+        "eat healthy",
+        "medication"
+      ]
+    },
+    "Hepatitis D": {
+      "name": "Hepatitis D",
+      "description": "Hepatitis D, also known as the hepatitis delta virus, is an infection that causes the liver to become inflamed. This swelling can impair liver function and cause long-term liver problems, including liver scarring and cancer. The condition is caused by the hepatitis D virus (HDV).",
+      "medication_classes": [
+        "Pegylated Interferon alfa",
+        "Hepatoprotectants",
+        "Supportive care"
+      ],
+      "first_line": "Pegylated Interferon alfa-2a for 48 weeks (specialist-guided)",
+      "specialist": "Hepatologist",
+      "department": "Gastroenterology",
+      "urgency": "high",
+      "lifestyle": [
+        "Strict alcohol avoidance",
+        "Hepatitis B vaccination (prevention)",
+        "Regular monitoring",
+        "Balanced nutrition"
+      ],
+      "red_flags": [
+        "Rapid liver deterioration",
+        "Fulminant hepatitis",
+        "Coagulopathy"
+      ],
+      "precautions": [
+        "consult doctor",
+        "medication",
+        "eat healthy",
+        "follow up"
+      ]
+    },
+    "Hepatitis E": {
+      "name": "Hepatitis E",
+      "description": "A rare form of liver inflammation caused by infection with the hepatitis E virus (HEV). It is transmitted via food or drink handled by an infected person or through infected water supplies in areas where fecal matter may get into the water. Hepatitis E does not cause chronic liver disease.",
+      "medication_classes": [
+        "Supportive care (no specific antiviral)",
+        "Hepatoprotectants",
+        "Antiemetics",
+        "IV fluids if needed"
+      ],
+      "first_line": "Supportive: rest + adequate nutrition + hydration (self-limiting)",
+      "specialist": "Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Drink boiled/filtered water",
+        "Avoid alcohol",
+        "Rest adequately",
+        "Practice food hygiene"
+      ],
+      "red_flags": [
+        "Severe jaundice",
+        "Pregnancy (high mortality risk)",
+        "Acute liver failure signs"
+      ],
+      "precautions": [
+        "stop alcohol consumption",
+        "rest",
+        "consult doctor",
+        "medication"
+      ]
+    },
+    "Hypertension ": {
+      "name": "Hypertension ",
+      "description": "Hypertension (HTN or HT), also known as high blood pressure (HBP), is a long-term medical condition in which the blood pressure in the arteries is persistently elevated. High blood pressure typically does not cause symptoms.",
+      "medication_classes": [
+        "ACE inhibitors (Enalapril, Ramipril)",
+        "ARBs (Losartan, Telmisartan)",
+        "Calcium channel blockers (Amlodipine)",
+        "Diuretics (Hydrochlorothiazide)",
+        "Beta-blockers"
+      ],
+      "first_line": "Amlodipine 5mg daily or Losartan 50mg daily",
+      "specialist": "Cardiologist / General Physician",
+      "department": "Cardiology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "DASH diet (low sodium)",
+        "Regular exercise 150 min/week",
+        "Limit alcohol",
+        "Quit smoking",
+        "Stress reduction",
+        "Regular BP monitoring"
+      ],
+      "red_flags": [
+        "BP > 180/120 (hypertensive crisis)",
+        "Severe headache with vision changes",
+        "Chest pain",
+        "Shortness of breath"
+      ],
+      "precautions": [
+        "meditation",
+        "salt baths",
+        "reduce stress",
+        "get proper sleep"
+      ]
+    },
+    "Hyperthyroidism": {
+      "name": "Hyperthyroidism",
+      "description": "Hyperthyroidism (overactive thyroid) occurs when your thyroid gland produces too much of the hormone thyroxine. Hyperthyroidism can accelerate your body's metabolism, causing unintentional weight loss and a rapid or irregular heartbeat.",
+      "medication_classes": [
+        "Anti-thyroid drugs (Methimazole, Carbimazole)",
+        "Beta-blockers (Propranolol)",
+        "Radioactive iodine",
+        "Thyroidectomy (surgical)"
+      ],
+      "first_line": "Methimazole 10-20mg daily + Propranolol 40mg for symptoms",
+      "specialist": "Endocrinologist",
+      "department": "Endocrinology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Regular thyroid function monitoring",
+        "Adequate calcium/vitamin D",
+        "Avoid iodine-rich foods",
+        "Manage stress"
+      ],
+      "red_flags": [
+        "Thyroid storm (rapid pulse, fever, confusion)",
+        "Severe weight loss",
+        "Eye bulging worsening"
+      ],
+      "precautions": [
+        "eat healthy",
+        "massage",
+        "use lemon balm",
+        "take radioactive iodine treatment"
+      ]
+    },
+    "Hypoglycemia": {
+      "name": "Hypoglycemia",
+      "description": " Hypoglycemia is a condition in which your blood sugar (glucose) level is lower than normal. Glucose is your body's main energy source. Hypoglycemia is often related to diabetes treatment. But other drugs and a variety of conditions — many rare — can cause low blood sugar in people who don't have diabetes.",
+      "medication_classes": [
+        "Glucose tablets/gel",
+        "Glucagon injection (severe)",
+        "Dextrose IV (emergency)"
+      ],
+      "first_line": "IMMEDIATE: 15-20g fast-acting carbs (glucose tablets, juice, sugar)",
+      "specialist": "Endocrinologist / Diabetologist",
+      "department": "Endocrinology",
+      "urgency": "high",
+      "lifestyle": [
+        "Regular meal schedule",
+        "Carry glucose tablets always",
+        "Monitor blood sugar frequently",
+        "Adjust insulin/medication with doctor"
+      ],
+      "red_flags": [
+        "Loss of consciousness",
+        "Seizures",
+        "Blood glucose < 54 mg/dL",
+        "Confusion/unresponsiveness"
+      ],
+      "precautions": [
+        "lie down on side",
+        "check in pulse",
+        "drink sugary drinks",
+        "consult doctor"
+      ]
+    },
+    "Hypothyroidism": {
+      "name": "Hypothyroidism",
+      "description": "Hypothyroidism, also called underactive thyroid or low thyroid, is a disorder of the endocrine system in which the thyroid gland does not produce enough thyroid hormone.",
+      "medication_classes": [
+        "Levothyroxine (synthetic T4)"
+      ],
+      "first_line": "Levothyroxine 25-50 mcg daily (empty stomach, 30 min before food)",
+      "specialist": "Endocrinologist",
+      "department": "Endocrinology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Take medication consistently at same time",
+        "Regular TSH monitoring every 6-8 weeks initially",
+        "Adequate iodine intake",
+        "Exercise regularly"
+      ],
+      "red_flags": [
+        "Myxedema coma (extreme fatigue, hypothermia)",
+        "Severe depression",
+        "Heart complications"
+      ],
+      "precautions": [
+        "reduce stress",
+        "exercise",
+        "eat healthy",
+        "get proper sleep"
+      ]
+    },
+    "Impetigo": {
+      "name": "Impetigo",
+      "description": "Impetigo (im-puh-TIE-go) is a common and highly contagious skin infection that mainly affects infants and children. Impetigo usually appears as red sores on the face, especially around a child's nose and mouth, and on hands and feet. The sores burst and develop honey-colored crusts.",
+      "medication_classes": [
+        "Topical antibiotics (Mupirocin, Fusidic acid)",
+        "Oral antibiotics (Cephalexin, Amoxicillin)"
+      ],
+      "first_line": "Mupirocin 2% ointment three times daily for 5-7 days",
+      "specialist": "Dermatologist / General Physician",
+      "department": "Dermatology",
+      "urgency": "low",
+      "lifestyle": [
+        "Keep sores clean and covered",
+        "Wash hands frequently",
+        "Avoid touching/scratching sores",
+        "Separate towels and linens"
+      ],
+      "red_flags": [
+        "Spreading despite treatment",
+        "Fever",
+        "Red streaks from sores",
+        "Kidney problems (post-strep)"
+      ],
+      "precautions": [
+        "soak affected area in warm water",
+        "use antibiotics",
+        "remove scabs with wet compressed cloth",
+        "consult doctor"
+      ]
+    },
+    "Jaundice": {
+      "name": "Jaundice",
+      "description": "Yellow staining of the skin and sclerae (the whites of the eyes) by abnormally high blood levels of the bile pigment bilirubin. The yellowing extends to other tissues and body fluids. Jaundice was once called the \"morbus regius\" (the regal disease) in the belief that only the touch of a king could cure it",
+      "medication_classes": [
+        "Treat underlying cause",
+        "Hepatoprotectants",
+        "Ursodeoxycholic acid (obstructive)",
+        "IV fluids"
+      ],
+      "first_line": "Identify and treat underlying cause + supportive care",
+      "specialist": "Hepatologist / Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Avoid alcohol completely",
+        "Light easily digestible diet",
+        "Adequate rest",
+        "Stay hydrated"
+      ],
+      "red_flags": [
+        "Rapidly deepening jaundice",
+        "Altered consciousness",
+        "Abdominal distension",
+        "Bleeding tendency"
+      ],
+      "precautions": [
+        "drink plenty of water",
+        "consume milk thistle",
+        "eat fruits and high fiberous food",
+        "medication"
+      ]
+    },
+    "Malaria": {
+      "name": "Malaria",
+      "description": "An infectious disease caused by protozoan parasites from the Plasmodium family that can be transmitted by the bite of the Anopheles mosquito or by a contaminated needle or transfusion. Falciparum malaria is the most deadly type.",
+      "medication_classes": [
+        "Artemisinin-based combination therapy (ACT)",
+        "Chloroquine (P. vivax)",
+        "Primaquine (radical cure)",
+        "Quinine (severe)"
+      ],
+      "first_line": "Artemether-Lumefantrine (ACT) for P. falciparum, Chloroquine for P. vivax",
+      "specialist": "Infectious Disease Specialist",
+      "department": "Infectious Diseases / General Medicine",
+      "urgency": "high",
+      "lifestyle": [
+        "Complete full antimalarial course",
+        "Use mosquito nets",
+        "Mosquito repellent",
+        "Drain stagnant water"
+      ],
+      "red_flags": [
+        "Cerebral malaria (confusion, seizures)",
+        "Severe anemia",
+        "Respiratory distress",
+        "Renal failure"
+      ],
+      "precautions": [
+        "Consult nearest hospital",
+        "avoid oily food",
+        "avoid non veg food",
+        "keep mosquitos out"
+      ]
+    },
+    "Migraine": {
+      "name": "Migraine",
+      "description": "A migraine can cause severe throbbing pain or a pulsing sensation, usually on one side of the head. It's often accompanied by nausea, vomiting, and extreme sensitivity to light and sound. Migraine attacks can last for hours to days, and the pain can be so severe that it interferes with your daily activities.",
+      "medication_classes": [
+        "Triptans (Sumatriptan)",
+        "NSAIDs (Ibuprofen, Naproxen)",
+        "Antiemetics (Metoclopramide)",
+        "Preventive: Beta-blockers, Topiramate, Amitriptyline"
+      ],
+      "first_line": "Ibuprofen 400mg at onset OR Sumatriptan 50mg if severe",
+      "specialist": "Neurologist",
+      "department": "Neurology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Identify and avoid triggers",
+        "Regular sleep schedule",
+        "Stress management",
+        "Stay hydrated",
+        "Maintain headache diary"
+      ],
+      "red_flags": [
+        "Worst headache of life (thunderclap)",
+        "Fever with stiff neck",
+        "New headache after age 50",
+        "Neurological symptoms"
+      ],
+      "precautions": [
+        "meditation",
+        "reduce stress",
+        "use poloroid glasses in sun",
+        "consult doctor"
+      ]
+    },
+    "Osteoarthristis": {
+      "name": "Osteoarthristis",
+      "description": "Osteoarthritis is the most common form of arthritis, affecting millions of people worldwide. It occurs when the protective cartilage that cushions the ends of your bones wears down over time.",
+      "medication_classes": [
+        "Analgesics (Paracetamol)",
+        "NSAIDs (Ibuprofen, Diclofenac)",
+        "Topical NSAIDs",
+        "Intra-articular corticosteroids",
+        "Glucosamine (supplement)"
+      ],
+      "first_line": "Paracetamol 500mg + topical Diclofenac gel + exercise",
+      "specialist": "Orthopedic Surgeon / Rheumatologist",
+      "department": "Orthopedics",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Regular low-impact exercise (swimming, walking)",
+        "Weight management",
+        "Joint protection techniques",
+        "Physical therapy"
+      ],
+      "red_flags": [
+        "Sudden severe joint swelling",
+        "Joint locking",
+        "Inability to bear weight",
+        "Signs of joint infection"
+      ],
+      "precautions": [
+        "acetaminophen",
+        "consult nearest hospital",
+        "follow up",
+        "salt baths"
+      ]
+    },
+    "Paralysis (brain hemorrhage)": {
+      "name": "Paralysis (brain hemorrhage)",
+      "description": "Intracerebral hemorrhage (ICH) is when blood suddenly bursts into brain tissue, causing damage to your brain. Symptoms usually appear suddenly during ICH. They include headache, weakness, confusion, and paralysis, particularly on one side of your body.",
+      "medication_classes": [
+        "EMERGENCY: Surgical intervention may be needed",
+        "Antihypertensives",
+        "Anticonvulsants",
+        "Osmotic diuretics (Mannitol)"
+      ],
+      "first_line": "EMERGENCY: Immediate hospitalization + CT scan + neurosurgery consult",
+      "specialist": "Neurosurgeon / Neurologist",
+      "department": "Neurosurgery / Emergency Medicine",
+      "urgency": "critical",
+      "lifestyle": [
+        "Rehabilitation program",
+        "Physical therapy",
+        "Occupational therapy",
+        "Speech therapy if needed",
+        "BP control"
+      ],
+      "red_flags": [
+        "ALL symptoms are red flags - immediate emergency care",
+        "Sudden weakness",
+        "Speech difficulty",
+        "Severe headache"
+      ],
+      "precautions": [
+        "massage",
+        "eat healthy",
+        "exercise",
+        "consult doctor"
+      ]
+    },
+    "Peptic ulcer diseae": {
+      "name": "Peptic ulcer diseae",
+      "description": "Peptic ulcer disease (PUD) is a break in the inner lining of the stomach, the first part of the small intestine, or sometimes the lower esophagus. An ulcer in the stomach is called a gastric ulcer, while one in the first part of the intestines is a duodenal ulcer.",
+      "medication_classes": [
+        "Proton pump inhibitors (Omeprazole, Pantoprazole)",
+        "H. pylori triple therapy (if positive)",
+        "Antacids",
+        "Sucralfate"
+      ],
+      "first_line": "Omeprazole 20mg twice daily + Amoxicillin + Clarithromycin (if H. pylori+)",
+      "specialist": "Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Avoid NSAIDs",
+        "Quit smoking",
+        "Limit alcohol",
+        "Regular small meals",
+        "Stress management"
+      ],
+      "red_flags": [
+        "Vomiting blood (hematemesis)",
+        "Black tarry stools (melena)",
+        "Sudden severe abdominal pain (perforation)",
+        "Rapid weight loss"
+      ],
+      "precautions": [
+        "avoid fatty spicy food",
+        "consume probiotic food",
+        "eliminate milk",
+        "limit alcohol"
+      ]
+    },
+    "Pneumonia": {
+      "name": "Pneumonia",
+      "description": "Pneumonia is an infection in one or both lungs. Bacteria, viruses, and fungi cause it. The infection causes inflammation in the air sacs in your lungs, which are called alveoli. The alveoli fill with fluid or pus, making it difficult to breathe.",
+      "medication_classes": [
+        "Antibiotics (Amoxicillin, Azithromycin, Levofloxacin)",
+        "Antipyretics (Paracetamol)",
+        "Mucolytics",
+        "Bronchodilators"
+      ],
+      "first_line": "Amoxicillin 500mg three times daily for 5-7 days (community-acquired)",
+      "specialist": "Pulmonologist",
+      "department": "Pulmonology / General Medicine",
+      "urgency": "high",
+      "lifestyle": [
+        "Complete antibiotic course",
+        "Rest and adequate fluids",
+        "Deep breathing exercises",
+        "Pneumococcal vaccination"
+      ],
+      "red_flags": [
+        "Severe breathlessness",
+        "Cyanosis (blue lips)",
+        "Confusion",
+        "BP drop",
+        "Oxygen saturation < 92%"
+      ],
+      "precautions": [
+        "consult doctor",
+        "medication",
+        "rest",
+        "follow up"
+      ]
+    },
+    "Psoriasis": {
+      "name": "Psoriasis",
+      "description": "Psoriasis is a common skin disorder that forms thick, red, bumpy patches covered with silvery scales. They can pop up anywhere, but most appear on the scalp, elbows, knees, and lower back. Psoriasis can't be passed from person to person. It does sometimes happen in members of the same family.",
+      "medication_classes": [
+        "Topical corticosteroids",
+        "Vitamin D analogs (Calcipotriol)",
+        "Retinoids (Acitretin)",
+        "Methotrexate (severe)",
+        "Phototherapy"
+      ],
+      "first_line": "Topical Betamethasone + Calcipotriol combination cream",
+      "specialist": "Dermatologist",
+      "department": "Dermatology",
+      "urgency": "low",
+      "lifestyle": [
+        "Regular moisturizing",
+        "Avoid triggers (stress, skin injury)",
+        "Moderate sun exposure",
+        "Avoid alcohol",
+        "Quit smoking"
+      ],
+      "red_flags": [
+        "Psoriatic arthritis symptoms",
+        "Widespread erythroderma",
+        "Pustular psoriasis",
+        "Severe impact on quality of life"
+      ],
+      "precautions": [
+        "wash hands with warm soapy water",
+        "stop bleeding using pressure",
+        "consult doctor",
+        "salt baths"
+      ]
+    },
+    "Tuberculosis": {
+      "name": "Tuberculosis",
+      "description": "Tuberculosis (TB) is an infectious disease usually caused by Mycobacterium tuberculosis (MTB) bacteria. Tuberculosis generally affects the lungs, but can also affect other parts of the body. Most infections show no symptoms, in which case it is known as latent tuberculosis.",
+      "medication_classes": [
+        "DOTS regimen: Isoniazid (H), Rifampicin (R), Pyrazinamide (Z), Ethambutol (E)",
+        "Vitamin B6 supplement"
+      ],
+      "first_line": "HRZE for 2 months (intensive) + HR for 4 months (continuation) = 6 months total",
+      "specialist": "Pulmonologist / TB Specialist",
+      "department": "Pulmonology / Infectious Diseases",
+      "urgency": "high",
+      "lifestyle": [
+        "Complete FULL 6-month course (critical)",
+        "Cover mouth when coughing",
+        "Ventilated living space",
+        "Nutritious diet",
+        "Contact tracing"
+      ],
+      "red_flags": [
+        "Hemoptysis (coughing blood)",
+        "MDR-TB suspicion",
+        "Weight loss > 10%",
+        "Miliary/meningeal TB"
+      ],
+      "precautions": [
+        "cover mouth",
+        "consult doctor",
+        "medication",
+        "rest"
+      ]
+    },
+    "Typhoid": {
+      "name": "Typhoid",
+      "description": "An acute illness characterized by fever caused by infection with the bacterium Salmonella typhi. Typhoid fever has an insidious onset, with fever, headache, constipation, malaise, chills, and muscle pain. Diarrhea is uncommon, and vomiting is not usually severe.",
+      "medication_classes": [
+        "Antibiotics (Azithromycin, Ceftriaxone, Ciprofloxacin)",
+        "Antipyretics (Paracetamol)",
+        "ORS/IV fluids"
+      ],
+      "first_line": "Azithromycin 500mg daily for 7 days OR Ceftriaxone (if severe)",
+      "specialist": "Infectious Disease Specialist / General Physician",
+      "department": "Infectious Diseases / General Medicine",
+      "urgency": "high",
+      "lifestyle": [
+        "Drink only boiled/purified water",
+        "Eat freshly cooked food",
+        "Hand hygiene",
+        "Complete antibiotic course",
+        "Typhoid vaccination"
+      ],
+      "red_flags": [
+        "Intestinal perforation (sudden severe pain)",
+        "GI bleeding",
+        "Sustained high fever > 104F",
+        "Confusion"
+      ],
+      "precautions": [
+        "eat high calorie vegitables",
+        "antiboitic therapy",
+        "consult doctor",
+        "medication"
+      ]
+    },
+    "Urinary tract infection": {
+      "name": "Urinary tract infection",
+      "description": "Urinary tract infection: An infection of the kidney, ureter, bladder, or urethra. Abbreviated UTI. Not everyone with a UTI has symptoms, but common symptoms include a frequent urge to urinate and pain or burning when urinating.",
+      "medication_classes": [
+        "Antibiotics (Nitrofurantoin, Trimethoprim, Ciprofloxacin)",
+        "Analgesics (Phenazopyridine)",
+        "Alkalinizers"
+      ],
+      "first_line": "Nitrofurantoin 100mg twice daily for 5 days",
+      "specialist": "Urologist / General Physician",
+      "department": "Urology / General Medicine",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Drink plenty of water",
+        "Urinate frequently",
+        "Wipe front to back",
+        "Avoid holding urine",
+        "Cranberry juice (supportive)"
+      ],
+      "red_flags": [
+        "High fever with flank pain (pyelonephritis)",
+        "Blood in urine",
+        "Recurrent UTIs (>3/year)",
+        "UTI in males"
+      ],
+      "precautions": [
+        "drink plenty of water",
+        "increase vitamin c intake",
+        "drink cranberry juice",
+        "take probiotics"
+      ]
+    },
+    "Varicose veins": {
+      "name": "Varicose veins",
+      "description": "A vein that has enlarged and twisted, often appearing as a bulging, blue blood vessel that is clearly visible through the skin. Varicose veins are most common in older adults, particularly women, and occur especially on the legs.",
+      "medication_classes": [
+        "Venotonics (Diosmin, Hesperidin)",
+        "Compression stockings",
+        "Topical heparinoids",
+        "Sclerotherapy / surgery (severe)"
+      ],
+      "first_line": "Compression stockings + Diosmin 500mg twice daily",
+      "specialist": "Vascular Surgeon",
+      "department": "Vascular Surgery",
+      "urgency": "low",
+      "lifestyle": [
+        "Leg elevation when resting",
+        "Regular walking/exercise",
+        "Avoid prolonged standing/sitting",
+        "Wear compression stockings",
+        "Weight management"
+      ],
+      "red_flags": [
+        "Leg ulceration",
+        "Skin color changes",
+        "Bleeding from varicose veins",
+        "Deep vein thrombosis signs"
+      ],
+      "precautions": [
+        "lie down flat and raise the leg high",
+        "use oinments",
+        "use vein compression",
+        "dont stand still for long"
+      ]
+    },
+    "hepatitis A": {
+      "name": "hepatitis A",
+      "description": "Hepatitis A is a highly contagious liver infection caused by the hepatitis A virus. The virus is one of several types of hepatitis viruses that cause inflammation and affect your liver's ability to function.",
+      "medication_classes": [
+        "Supportive care (no specific antiviral)",
+        "Hepatoprotectants",
+        "Antiemetics",
+        "Rest"
+      ],
+      "first_line": "Supportive: rest + adequate nutrition + hydration (self-limiting in 2-6 months)",
+      "specialist": "Gastroenterologist",
+      "department": "Gastroenterology",
+      "urgency": "moderate",
+      "lifestyle": [
+        "Strict hygiene and hand washing",
+        "Drink boiled/purified water",
+        "Avoid alcohol",
+        "Rest adequately",
+        "Hepatitis A vaccination for contacts"
+      ],
+      "red_flags": [
+        "Fulminant hepatitis (rare)",
+        "Severe jaundice",
+        "Prolonged PT/INR",
+        "Hepatic encephalopathy"
+      ],
+      "precautions": [
+        "Consult nearest hospital",
+        "wash hands through",
+        "avoid fatty spicy food",
+        "medication"
+      ]
+    }
+  },
+  "symptom_severity": {
+    "itching": 1,
+    "skin_rash": 3,
+    "nodal_skin_eruptions": 4,
+    "continuous_sneezing": 4,
+    "shivering": 5,
+    "chills": 3,
+    "joint_pain": 3,
+    "stomach_pain": 5,
+    "acidity": 3,
+    "ulcers_on_tongue": 4,
+    "muscle_wasting": 3,
+    "vomiting": 5,
+    "burning_micturition": 6,
+    "spotting_urination": 6,
+    "fatigue": 4,
+    "weight_gain": 3,
+    "anxiety": 4,
+    "cold_hands_and_feets": 5,
+    "mood_swings": 3,
+    "weight_loss": 3,
+    "restlessness": 5,
+    "lethargy": 2,
+    "patches_in_throat": 6,
+    "irregular_sugar_level": 5,
+    "cough": 4,
+    "high_fever": 7,
+    "sunken_eyes": 3,
+    "breathlessness": 4,
+    "sweating": 3,
+    "dehydration": 4,
+    "indigestion": 5,
+    "headache": 3,
+    "yellowish_skin": 3,
+    "dark_urine": 4,
+    "nausea": 5,
+    "loss_of_appetite": 4,
+    "pain_behind_the_eyes": 4,
+    "back_pain": 3,
+    "constipation": 4,
+    "abdominal_pain": 4,
+    "diarrhoea": 6,
+    "mild_fever": 5,
+    "yellow_urine": 4,
+    "yellowing_of_eyes": 4,
+    "acute_liver_failure": 6,
+    "fluid_overload": 4,
+    "swelling_of_stomach": 7,
+    "swelled_lymph_nodes": 6,
+    "malaise": 6,
+    "blurred_and_distorted_vision": 5,
+    "phlegm": 5,
+    "throat_irritation": 4,
+    "redness_of_eyes": 5,
+    "sinus_pressure": 4,
+    "runny_nose": 5,
+    "congestion": 5,
+    "chest_pain": 7,
+    "weakness_in_limbs": 7,
+    "fast_heart_rate": 5,
+    "pain_during_bowel_movements": 5,
+    "pain_in_anal_region": 6,
+    "bloody_stool": 5,
+    "irritation_in_anus": 6,
+    "neck_pain": 5,
+    "dizziness": 4,
+    "cramps": 4,
+    "bruising": 4,
+    "obesity": 4,
+    "swollen_legs": 5,
+    "swollen_blood_vessels": 5,
+    "puffy_face_and_eyes": 5,
+    "enlarged_thyroid": 6,
+    "brittle_nails": 5,
+    "swollen_extremeties": 5,
+    "excessive_hunger": 4,
+    "extra_marital_contacts": 5,
+    "drying_and_tingling_lips": 4,
+    "slurred_speech": 4,
+    "knee_pain": 3,
+    "hip_joint_pain": 2,
+    "muscle_weakness": 2,
+    "stiff_neck": 4,
+    "swelling_joints": 5,
+    "movement_stiffness": 5,
+    "spinning_movements": 6,
+    "loss_of_balance": 4,
+    "unsteadiness": 4,
+    "weakness_of_one_body_side": 4,
+    "loss_of_smell": 3,
+    "bladder_discomfort": 4,
+    "foul_smell_ofurine": 5,
+    "continuous_feel_of_urine": 6,
+    "passage_of_gases": 5,
+    "internal_itching": 4,
+    "toxic_look_(typhos)": 5,
+    "depression": 3,
+    "irritability": 2,
+    "muscle_pain": 2,
+    "altered_sensorium": 2,
+    "red_spots_over_body": 3,
+    "belly_pain": 4,
+    "abnormal_menstruation": 6,
+    "dischromic_patches": 6,
+    "watering_from_eyes": 4,
+    "increased_appetite": 5,
+    "polyuria": 4,
+    "family_history": 5,
+    "mucoid_sputum": 4,
+    "rusty_sputum": 4,
+    "lack_of_concentration": 3,
+    "visual_disturbances": 3,
+    "receiving_blood_transfusion": 5,
+    "receiving_unsterile_injections": 2,
+    "coma": 7,
+    "stomach_bleeding": 6,
+    "distention_of_abdomen": 4,
+    "history_of_alcohol_consumption": 5,
+    "blood_in_sputum": 5,
+    "prominent_veins_on_calf": 6,
+    "palpitations": 4,
+    "painful_walking": 2,
+    "pus_filled_pimples": 2,
+    "blackheads": 2,
+    "scurring": 2,
+    "skin_peeling": 3,
+    "silver_like_dusting": 2,
+    "small_dents_in_nails": 2,
+    "inflammatory_nails": 2,
+    "blister": 4,
+    "red_sore_around_nose": 2,
+    "yellow_crust_ooze": 3,
+    "prognosis": 5
+  }
+}
