@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory Management{% endblock %}
+{% block page_title %}Pharmacy Inventory & Batches{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <div style="display: flex; gap: 12px; align-items: center; flex: 1; max-width: 500px;">
+      <input type="text" id="inventory-search" class="form-control" placeholder="Search medicines by name or ATC code..." onkeyup="filterInventoryTable()">
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-outline" onclick="openReceiveBatchModal()">+ Receive Stock Batch</button>
+      <button class="btn btn-primary" onclick="openAddMedicineModal()">+ Add New Medicine</button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table" id="medicines-table">
+      <thead>
+        <tr>
+          <th>Medicine Name</th>
+          <th>ATC Group</th>
+          <th>Pack Size</th>
+          <th>Unit Cost</th>
+          <th>Unit Price</th>
+          <th>Available Stock</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="inventory-table-body">
+        <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading inventory catalog...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal: View Medicine Batches -->
+<div id="batches-modal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 750px;">
+    <div class="modal-header">
+      <div>
+        <h2 id="modal-med-name" style="font-size: 18px; font-weight: 700;">Batches</h2>
+        <div id="modal-med-cat" style="font-size: 12px; color: var(--text-muted);"></div>
+      </div>
+      <button onclick="closeModal('batches-modal')" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Batch No</th>
+            <th>Expiry Date</th>
+            <th>Days Left</th>
+            <th>Qty Left</th>
+            <th>AI Expiry Risk</th>
+          </tr>
+        </thead>
+        <tbody id="modal-batches-tbody">
+          <tr><td colspan="5" style="text-align: center;">Loading batches...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+      <button class="btn btn-outline" onclick="closeModal('batches-modal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add New Medicine -->
+<div id="add-medicine-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 style="font-size: 16px; font-weight: 700;">Add New Medicine</h2>
+      <button onclick="closeModal('add-medicine-modal')" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <form id="add-medicine-form" onsubmit="submitAddMedicine(event)">
+      <div class="form-group">
+        <label class="form-label">Medicine Name *</label>
+        <input type="text" id="add-med-name" class="form-control" required placeholder="e.g. Amoxicillin 500mg Capsule">
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label class="form-label">ATC Drug Group *</label>
+          <select id="add-med-atc" class="form-control" required>
+            <option value="M01AB">M01AB (Diclofenac / Anti-inflammatory)</option>
+            <option value="M01AE">M01AE (Ibuprofen / Anti-inflammatory)</option>
+            <option value="N02BA">N02BA (Aspirin / Analgesic)</option>
+            <option value="N02BE">N02BE (Paracetamol / Antipyretic)</option>
+            <option value="N05B">N05B (Anxiolytics)</option>
+            <option value="N05C">N05C (Hypnotics & Sedatives)</option>
+            <option value="R03">R03 (Asthma / COPD)</option>
+            <option value="R06">R06 (Antihistamines)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <input type="text" id="add-med-cat" class="form-control" placeholder="e.g. Antibiotics">
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label class="form-label">Unit Cost (Rs) *</label>
+          <input type="number" step="0.01" id="add-med-cost" class="form-control" required placeholder="10.00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Selling Price (Rs) *</label>
+          <input type="number" step="0.01" id="add-med-price" class="form-control" required placeholder="14.00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pack Size</label>
+          <input type="number" id="add-med-pack" class="form-control" value="10">
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
+        <button type="button" class="btn btn-outline" onclick="closeModal('add-medicine-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Medicine</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Receive Stock Batch -->
+<div id="receive-batch-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 style="font-size: 16px; font-weight: 700;">Receive New Batch Stock</h2>
+      <button onclick="closeModal('receive-batch-modal')" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <form id="receive-batch-form" onsubmit="submitReceiveBatch(event)">
+      <div class="form-group">
+        <label class="form-label">Select Medicine *</label>
+        <select id="recv-med-id" class="form-control" required></select>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label class="form-label">Batch Number *</label>
+          <input type="text" id="recv-batch-no" class="form-control" required placeholder="e.g. BCH-2026-999">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Supplier</label>
+          <select id="recv-supplier-id" class="form-control"></select>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label class="form-label">Manufacturing Date *</label>
+          <input type="date" id="recv-mfg-date" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Expiry Date *</label>
+          <input type="date" id="recv-exp-date" class="form-control" required>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="form-group">
+          <label class="form-label">Quantity Received *</label>
+          <input type="number" id="recv-qty" class="form-control" required min="1" placeholder="100">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unit Cost (Rs) *</label>
+          <input type="number" step="0.01" id="recv-cost" class="form-control" required placeholder="5.00">
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
+        <button type="button" class="btn btn-outline" onclick="closeModal('receive-batch-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Receive Batch</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let allMedicines = [];
+
+async function loadInventory() {
+  try {
+    const res = await fetch("/api/inventory/medicines");
+    const data = await res.json();
+    if (!data.success) return;
+
+    allMedicines = data.medicines || [];
+    renderInventoryTable(allMedicines);
+    populateMedicineSelects(allMedicines);
+    loadSuppliersSelect();
+  } catch (err) {
+    console.error("Load inventory error:", err);
+  }
+}
+
+function renderInventoryTable(medicines) {
+  const tbody = document.getElementById("inventory-table-body");
+  tbody.innerHTML = "";
+
+  if (medicines.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">No medicines found.</td></tr>`;
+    return;
+  }
+
+  medicines.forEach(m => {
+    const tr = document.createElement("tr");
+    const isLow = m.total_stock <= m.min_stock_alert;
+    const isOut = m.total_stock === 0;
+
+    tr.innerHTML = `
+      <td>
+        <strong>${m.name}</strong>
+        ${m.prescription_required ? '<span class="badge badge-critical" style="font-size:9px; margin-left:4px;">Rx</span>' : ''}
+      </td>
+      <td><span class="badge badge-active">${m.atc_group}</span></td>
+      <td>${m.pack_size} units</td>
+      <td>${formatCurrency(m.unit_cost)}</td>
+      <td><strong>${formatCurrency(m.unit_price)}</strong></td>
+      <td>
+        <span style="font-weight: 700; color: ${isOut ? 'var(--critical)' : isLow ? 'var(--warning)' : 'var(--text-main)'};">
+          ${m.total_stock} units
+        </span>
+      </td>
+      <td>
+        ${isOut ? '<span class="badge badge-critical">Out of Stock</span>' : isLow ? '<span class="badge badge-watch">Low Stock</span>' : '<span class="badge badge-safe">In Stock</span>'}
+      </td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="viewBatches(${m.id})">Batches (${m.batches ? m.batches.length : 'View'})</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterInventoryTable() {
+  const q = document.getElementById("inventory-search").value.toLowerCase();
+  const filtered = allMedicines.filter(m => 
+    m.name.toLowerCase().includes(q) || m.atc_group.toLowerCase().includes(q)
+  );
+  renderInventoryTable(filtered);
+}
+
+async function viewBatches(medId) {
+  openModal("batches-modal");
+  const med = allMedicines.find(m => m.id === medId);
+  if (med) {
+    document.getElementById("modal-med-name").textContent = med.name;
+    document.getElementById("modal-med-cat").textContent = `${med.category} (ATC: ${med.atc_group}) • Price: ${formatCurrency(med.unit_price)}`;
+  }
+
+  try {
+    const res = await fetch(`/api/inventory/medicines/${medId}`);
+    const data = await res.json();
+    const tbody = document.getElementById("modal-batches-tbody");
+    tbody.innerHTML = "";
+
+    const batches = data.medicine.batches || [];
+    if (batches.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No active batches in depot.</td></tr>`;
+      return;
+    }
+
+    batches.forEach(b => {
+      const tr = document.createElement("tr");
+      const badgeClass = b.risk_bucket === 'CRITICAL' ? 'badge-critical' : b.risk_bucket === 'HIGH' ? 'badge-high' : 'badge-safe';
+      tr.innerHTML = `
+        <td><code>${b.batch_number}</code></td>
+        <td>${formatDate(b.expiry_date)}</td>
+        <td><span style="font-weight:700; color:${b.days_to_expiry <= 30 ? 'var(--critical)' : 'inherit'};">${b.days_to_expiry} days</span></td>
+        <td><strong>${b.quantity_remaining}</strong> / ${b.quantity_received}</td>
+        <td><span class="badge ${badgeClass}">${b.risk_bucket} (${b.risk_score})</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("View batches error:", err);
+  }
+}
+
+function populateMedicineSelects(medicines) {
+  const sel = document.getElementById("recv-med-id");
+  sel.innerHTML = medicines.map(m => `<option value="${m.id}">${m.name} (${m.atc_group})</option>`).join("");
+}
+
+async function loadSuppliersSelect() {
+  try {
+    const res = await fetch("/api/inventory/suppliers");
+    const data = await res.json();
+    const sel = document.getElementById("recv-supplier-id");
+    sel.innerHTML = data.suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+  } catch (err) {}
+}
+
+function openAddMedicineModal() { openModal("add-medicine-modal"); }
+function openReceiveBatchModal() { openModal("receive-batch-modal"); }
+
+async function submitAddMedicine(e) {
+  e.preventDefault();
+  const payload = {
+    name: document.getElementById("add-med-name").value,
+    atc_group: document.getElementById("add-med-atc").value,
+    category: document.getElementById("add-med-cat").value,
+    unit_cost: parseFloat(document.getElementById("add-med-cost").value),
+    unit_price: parseFloat(document.getElementById("add-med-price").value),
+    pack_size: parseInt(document.getElementById("add-med-pack").value) || 10,
+  };
+
+  try {
+    const res = await fetch("/api/inventory/medicines", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast("Medicine added successfully!", "success");
+      closeModal("add-medicine-modal");
+      loadInventory();
+    } else {
+      showToast(data.error || "Failed to add medicine", "danger");
+    }
+  } catch (err) {
+    showToast("Server error adding medicine", "danger");
+  }
+}
+
+async function submitReceiveBatch(e) {
+  e.preventDefault();
+  const payload = {
+    medicine_id: parseInt(document.getElementById("recv-med-id").value),
+    batch_number: document.getElementById("recv-batch-no").value,
+    supplier_id: parseInt(document.getElementById("recv-supplier-id").value),
+    mfg_date: document.getElementById("recv-mfg-date").value,
+    expiry_date: document.getElementById("recv-exp-date").value,
+    quantity: parseInt(document.getElementById("recv-qty").value),
+    unit_cost: parseFloat(document.getElementById("recv-cost").value),
+  };
+
+  try {
+    const res = await fetch("/api/inventory/batches/receive", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast("Stock batch received and added to inventory!", "success");
+      closeModal("receive-batch-modal");
+      loadInventory();
+    } else {
+      showToast(data.error || "Failed to receive batch", "danger");
+    }
+  } catch (err) {
+    showToast("Server error receiving batch", "danger");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadInventory);
+</script>
+{% endblock %}

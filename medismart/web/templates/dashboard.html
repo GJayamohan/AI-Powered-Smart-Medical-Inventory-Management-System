@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Pharmacy Executive Overview{% endblock %}
+
+{% block content %}
+<!-- Quick KPI Cards Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div>
+      <div class="stat-title">Total Stock Valuation</div>
+      <div class="stat-val" id="kpi-inventory-val">Rs --</div>
+      <div class="stat-desc" id="kpi-medicines-count">-- Medicines in Catalog</div>
+    </div>
+    <div class="stat-icon" style="color: var(--primary);">💰</div>
+  </div>
+
+  <div class="stat-card warning">
+    <div>
+      <div class="stat-title">Near-Expiry Warning</div>
+      <div class="stat-val" style="color: var(--critical);" id="kpi-near-exp">--</div>
+      <div class="stat-desc">Batches expiring in ≤30 days</div>
+    </div>
+    <div class="stat-icon" style="color: var(--danger);">⏳</div>
+  </div>
+
+  <div class="stat-card danger">
+    <div>
+      <div class="stat-title">Low Stock Shortage</div>
+      <div class="stat-val" style="color: var(--warning);" id="kpi-low-stock">--</div>
+      <div class="stat-desc">Below minimum reorder level</div>
+    </div>
+    <div class="stat-icon" style="color: var(--warning);">⚠️</div>
+  </div>
+
+  <div class="stat-card info">
+    <div>
+      <div class="stat-title">Today's Sales</div>
+      <div class="stat-val" id="kpi-today-sales">Rs 0.00</div>
+      <div class="stat-desc" id="kpi-today-orders">0 completed orders</div>
+    </div>
+    <div class="stat-icon" style="color: var(--secondary);">🛒</div>
+  </div>
+
+  <div class="stat-card">
+    <div>
+      <div class="stat-title">AI Diagnostics</div>
+      <div class="stat-val" id="kpi-consultations">--</div>
+      <div class="stat-desc">Clinical consultations logged</div>
+    </div>
+    <div class="stat-icon" style="color: var(--accent);">🩺</div>
+  </div>
+</div>
+
+<!-- Visualization Charts Row -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 24px;">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">AI Expiry Risk Distribution</div>
+      <span class="badge badge-safe">Model 2b Scoring</span>
+    </div>
+    <div style="height: 250px; position: relative;">
+      <canvas id="expiryRiskChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Inventory Stock by Therapeutic Class</div>
+      <span class="badge badge-active">Active Stock Units</span>
+    </div>
+    <div style="height: 250px; position: relative;">
+      <canvas id="categoryStockChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Actionable Tables Row -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 24px;">
+  <!-- High Risk Near Expiry Batches -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🚨 Action Required: Near-Expiry Batches</div>
+      <a href="{{ url_for('web_bp.expiry') }}" class="btn btn-outline btn-sm">View All in Expiry AI →</a>
+    </div>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Medicine</th>
+            <th>Batch</th>
+            <th>Days Left</th>
+            <th>Stock Left</th>
+            <th>AI Risk</th>
+          </tr>
+        </thead>
+        <tbody id="near-expiry-table-body">
+          <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading near-expiry batches...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Low Stock Reorder Alerts -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📦 Reorder Alerts: Low Stock Medicines</div>
+      <a href="{{ url_for('web_bp.inventory') }}" class="btn btn-outline btn-sm">Manage Inventory →</a>
+    </div>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Medicine</th>
+            <th>Category</th>
+            <th>Current Stock</th>
+            <th>Min Level</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="low-stock-table-body">
+          <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading stock levels...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let expiryChartInstance = null;
+let categoryChartInstance = null;
+
+async function loadDashboardData() {
+  try {
+    const res = await fetch("/api/dashboard/summary");
+    const data = await res.json();
+    if (!data.success) return;
+
+    // 1. Fill KPI Cards
+    document.getElementById("kpi-inventory-val").textContent = formatCurrency(data.inventory.total_inventory_value);
+    document.getElementById("kpi-medicines-count").textContent = `${data.inventory.total_medicines} Medicines (${data.inventory.total_stock_units.toLocaleString()} units)`;
+    document.getElementById("kpi-near-exp").textContent = data.expiry_risk.near_expiry_count;
+    document.getElementById("kpi-low-stock").textContent = data.inventory.low_stock_count;
+    document.getElementById("kpi-today-sales").textContent = formatCurrency(data.sales.today_revenue);
+    document.getElementById("kpi-today-orders").textContent = `${data.sales.today_orders} completed orders`;
+    document.getElementById("kpi-consultations").textContent = data.diagnostics.total_consultations;
+
+    // 2. Fetch Detailed Expiry Analytics for Chart & Table
+    loadExpirySection();
+
+    // 3. Fetch Low Stock Data
+    loadLowStockSection();
+
+    // 4. Fetch Stock Category Breakdown
+    loadCategoryStockChart();
+
+  } catch (err) {
+    console.error("Dashboard error:", err);
+  }
+}
+
+async function loadExpirySection() {
+  try {
+    const res = await fetch("/api/expiry/analytics");
+    const data = await res.json();
+    if (!data.success) return;
+
+    // Render Expiry Risk Donut Chart
+    const ctx = document.getElementById("expiryRiskChart").getContext("2d");
+    if (expiryChartInstance) expiryChartInstance.destroy();
+
+    const bd = data.risk_breakdown;
+    expiryChartInstance = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Safe", "Watch", "High Risk", "Critical"],
+        datasets: [{
+          data: [bd.SAFE || 0, bd.WATCH || 0, bd.HIGH || 0, bd.CRITICAL || 0],
+          backgroundColor: ["#10b981", "#f59e0b", "#f97316", "#ef4444"],
+          borderWidth: 2,
+          borderColor: "#fff",
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "right", labels: { font: { size: 12 } } }
+        }
+      }
+    });
+
+    // Populate Near-Expiry Table
+    const tbody = document.getElementById("near-expiry-table-body");
+    tbody.innerHTML = "";
+
+    const batches = data.critical_batches || [];
+    if (batches.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #10b981;">✓ No high-risk or near-expiry batches detected.</td></tr>`;
+      return;
+    }
+
+    batches.slice(0, 6).forEach(b => {
+      const tr = document.createElement("tr");
+      const badgeClass = b.risk_bucket === 'CRITICAL' ? 'badge-critical' : b.risk_bucket === 'HIGH' ? 'badge-high' : 'badge-watch';
+      tr.innerHTML = `
+        <td><strong>${b.medicine_name}</strong></td>
+        <td><code>${b.batch_number}</code></td>
+        <td><span style="color: ${b.days_to_expiry <= 30 ? 'var(--critical)' : 'var(--warning)'}; font-weight:700;">${b.days_to_expiry} days</span></td>
+        <td>${b.quantity_remaining} units</td>
+        <td><span class="badge ${badgeClass}">${b.risk_bucket} (${b.risk_score})</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+  } catch (err) {
+    console.error("Expiry analytics error:", err);
+  }
+}
+
+async function loadLowStockSection() {
+  try {
+    const res = await fetch("/api/inventory/low-stock");
+    const data = await res.json();
+    const tbody = document.getElementById("low-stock-table-body");
+    tbody.innerHTML = "";
+
+    if (!data.alerts || data.alerts.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #10b981;">✓ All stock levels are sufficient.</td></tr>`;
+      return;
+    }
+
+    data.alerts.slice(0, 6).forEach(a => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><strong>${a.name}</strong></td>
+        <td><span class="badge badge-active">${a.atc_group}</span></td>
+        <td><span style="font-weight:700; color:var(--critical);">${a.current_stock} units</span></td>
+        <td>${a.min_stock_alert} units</td>
+        <td><span class="badge badge-critical">Shortage: ${a.shortage}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Low stock error:", err);
+  }
+}
+
+async function loadCategoryStockChart() {
+  try {
+    const res = await fetch("/api/inventory/medicines");
+    const data = await res.json();
+    if (!data.medicines) return;
+
+    const catTotals = {};
+    data.medicines.forEach(m => {
+      catTotals[m.atc_group] = (catTotals[m.atc_group] || 0) + m.total_stock;
+    });
+
+    const ctx = document.getElementById("categoryStockChart").getContext("2d");
+    if (categoryChartInstance) categoryChartInstance.destroy();
+
+    categoryChartInstance = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: Object.keys(catTotals),
+        datasets: [{
+          label: "Total Units in Stock",
+          data: Object.values(catTotals),
+          backgroundColor: "#0f766e",
+          borderRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, grid: { color: "#f1f5f9" } },
+          x: { grid: { display: false } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  } catch (err) {
+    console.error("Category chart error:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadDashboardData);
+</script>
+{% endblock %}

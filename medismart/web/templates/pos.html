@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+
+{% block title %}Point of Sale (POS) & FEFO Dispense{% endblock %}
+{% block page_title %}Pharmacy Point of Sale (FEFO Dispensing){% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
+  <!-- Left Column: Add Medicine & FEFO Allocation Preview -->
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Dispense Prescription / Over-the-Counter</div>
+          <div style="font-size: 12px; color: var(--text-muted);">First-Expiry-First-Out (FEFO) batches are automatically prioritized</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 12px; align-items: flex-end; margin-bottom: 20px;">
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label">Select Medicine</label>
+          <select id="pos-med-select" class="form-control" onchange="previewFEFO()">
+            <option value="">-- Choose Medicine --</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin: 0;">
+          <label class="form-label">Quantity</label>
+          <input type="number" id="pos-qty-input" class="form-control" value="10" min="1" onchange="previewFEFO()" onkeyup="previewFEFO()">
+        </div>
+        <button class="btn btn-primary" onclick="addToCart()" id="btn-add-cart">
+          + Add to Bill
+        </button>
+      </div>
+
+      <!-- FEFO Allocation Preview Box -->
+      <div id="fefo-preview-box" style="background: #f8fafc; border: 1px dashed var(--border-color); border-radius: var(--radius-sm); padding: 14px; min-height: 120px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+          FEFO Batch Deduction Plan
+        </div>
+        <div id="fefo-preview-content" style="font-size: 13px; color: var(--text-muted);">
+          Select a medicine and quantity to preview which batches will be dispensed first.
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Cart Items Table -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Current Prescription Bill Items</div>
+        <button class="btn btn-outline btn-sm" onclick="clearCart()">Clear All</button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Medicine</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Subtotal</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="cart-table-body">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Cart is empty.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Checkout & Payment Summary -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Billing & Checkout</div>
+      <span class="badge badge-safe">FEFO Audited</span>
+    </div>
+
+    <form id="checkout-form" onsubmit="processCheckout(event)">
+      <div class="form-group">
+        <label class="form-label">Customer Name</label>
+        <input type="text" id="cust-name" class="form-control" placeholder="Walk-in Customer" value="Walk-in Customer">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number (Optional)</label>
+        <input type="tel" id="cust-phone" class="form-control" placeholder="+91-98765-43210">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Method</label>
+        <select id="cust-payment" class="form-control">
+          <option value="CASH">Cash Payment</option>
+          <option value="UPI">UPI / QR Code</option>
+          <option value="CARD">Credit / Debit Card</option>
+        </select>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px; margin: 20px 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+          <span>Items Total:</span>
+          <span id="bill-subtotal" style="font-weight: 700;">Rs 0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
+          <span>Discount (Rs):</span>
+          <input type="number" id="bill-discount" class="form-control" style="width: 90px; padding: 2px 6px; text-align: right;" value="0" min="0" onchange="calcTotal()">
+        </div>
+        <div style="border-top: 1px solid var(--border-color); padding-top: 10px; display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; color: var(--primary);">
+          <span>Net Payable:</span>
+          <span id="bill-net">Rs 0.00</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+        💳 Complete Sale & Deduct Inventory
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Receipt Modal -->
+<div id="receipt-modal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 480px;">
+    <div class="modal-header">
+      <h2 style="font-size: 16px; font-weight: 700;">Sale Receipt Generated</h2>
+      <button onclick="closeModal('receipt-modal')" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <div id="receipt-content" style="font-family: monospace; background: #fafafa; padding: 16px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px;"></div>
+    <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 10px;">
+      <button class="btn btn-outline" onclick="closeModal('receipt-modal')">Close</button>
+      <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let medicinesList = [];
+let cartItems = [];
+let currentFEFOPlan = null;
+
+async function loadPOSData() {
+  try {
+    const res = await fetch("/api/inventory/medicines");
+    const data = await res.json();
+    if (!data.success) return;
+
+    medicinesList = data.medicines || [];
+    const sel = document.getElementById("pos-med-select");
+    sel.innerHTML = '<option value="">-- Choose Medicine --</option>' +
+      medicinesList.map(m => `<option value="${m.id}">${m.name} (Stock: ${m.total_stock} | Rs ${m.unit_price})</option>`).join("");
+  } catch (err) {
+    console.error("Load POS error:", err);
+  }
+}
+
+async function previewFEFO() {
+  const medId = document.getElementById("pos-med-select").value;
+  const qty = parseInt(document.getElementById("pos-qty-input").value) || 0;
+  const container = document.getElementById("fefo-preview-content");
+
+  if (!medId || qty <= 0) {
+    container.innerHTML = "Select a medicine and quantity to preview FEFO allocation.";
+    currentFEFOPlan = null;
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/inventory/fefo-preview", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ medicine_id: parseInt(medId), quantity: qty }),
+    });
+    const data = await res.json();
+
+    if (!data.success) {
+      container.innerHTML = `<span style="color: var(--critical); font-weight:700;">⚠ ${data.error}</span>`;
+      currentFEFOPlan = null;
+      return;
+    }
+
+    currentFEFOPlan = data;
+    let html = `<div style="font-weight:700; color:var(--primary); margin-bottom:6px;">✓ FEFO Allocation Plan for ${qty} units:</div><ul style="padding-left:18px;">`;
+    data.allocation.forEach(a => {
+      html += `<li>Deduct <strong>${a.take_quantity} units</strong> from Batch <code>${a.batch_number}</code> (Exp: ${formatDate(a.expiry_date)}, ${a.days_to_expiry} days left) — Subtotal: ${formatCurrency(a.subtotal)}</li>`;
+    });
+    html += `</ul><div style="margin-top:6px; font-weight:700;">Item Total: ${formatCurrency(data.total_subtotal)}</div>`;
+    container.innerHTML = html;
+  } catch (err) {
+    container.innerHTML = "Error previewing batch deductions.";
+  }
+}
+
+function addToCart() {
+  if (!currentFEFOPlan) {
+    showToast("Please select a valid medicine and quantity with sufficient stock.", "danger");
+    return;
+  }
+
+  const existingIdx = cartItems.findIndex(i => i.medicine_id === currentFEFOPlan.medicine_id);
+  if (existingIdx >= 0) {
+    cartItems[existingIdx].quantity += currentFEFOPlan.requested_qty;
+    cartItems[existingIdx].subtotal += currentFEFOPlan.total_subtotal;
+  } else {
+    cartItems.push({
+      medicine_id: currentFEFOPlan.medicine_id,
+      medicine_name: currentFEFOPlan.medicine_name,
+      quantity: currentFEFOPlan.requested_qty,
+      unit_price: currentFEFOPlan.allocation[0].unit_price,
+      subtotal: currentFEFOPlan.total_subtotal,
+    });
+  }
+
+  showToast(`Added ${currentFEFOPlan.requested_qty}x ${currentFEFOPlan.medicine_name} to bill`, "success");
+  renderCart();
+  document.getElementById("pos-med-select").value = "";
+  document.getElementById("fefo-preview-content").innerHTML = "Select a medicine and quantity to preview.";
+  currentFEFOPlan = null;
+}
+
+function renderCart() {
+  const tbody = document.getElementById("cart-table-body");
+  tbody.innerHTML = "";
+
+  if (cartItems.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Cart is empty.</td></tr>`;
+    calcTotal();
+    return;
+  }
+
+  cartItems.forEach((item, idx) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${item.medicine_name}</strong></td>
+      <td>${item.quantity} units</td>
+      <td>${formatCurrency(item.unit_price)}</td>
+      <td><strong>${formatCurrency(item.subtotal)}</strong></td>
+      <td><button class="btn btn-outline btn-sm" onclick="removeItem(${idx})">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  calcTotal();
+}
+
+function removeItem(idx) {
+  cartItems.splice(idx, 1);
+  renderCart();
+}
+
+function clearCart() {
+  cartItems = [];
+  renderCart();
+}
+
+function calcTotal() {
+  const sub = cartItems.reduce((acc, i) => acc + i.subtotal, 0);
+  const discount = parseFloat(document.getElementById("bill-discount").value) || 0;
+  const net = Math.max(0, sub - discount);
+
+  document.getElementById("bill-subtotal").textContent = formatCurrency(sub);
+  document.getElementById("bill-net").textContent = formatCurrency(net);
+}
+
+async function processCheckout(e) {
+  e.preventDefault();
+  if (cartItems.length === 0) {
+    showToast("Cannot checkout an empty prescription bill.", "danger");
+    return;
+  }
+
+  const payload = {
+    customer_name: document.getElementById("cust-name").value,
+    customer_phone: document.getElementById("cust-phone").value,
+    payment_method: document.getElementById("cust-payment").value,
+    discount: parseFloat(document.getElementById("bill-discount").value) || 0,
+    items: cartItems.map(i => ({ medicine_id: i.medicine_id, quantity: i.quantity })),
+  };
+
+  try {
+    const res = await fetch("/api/inventory/sale", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      showToast(`Sale completed! Invoice: ${data.invoice_no}`, "success");
+      displayReceipt(data, payload);
+      clearCart();
+      loadPOSData();
+      updateTopbarStats();
+    } else {
+      showToast(data.error || "Sale failed", "danger");
+    }
+  } catch (err) {
+    showToast("Server error completing sale", "danger");
+  }
+}
+
+function displayReceipt(saleData, payload) {
+  const content = document.getElementById("receipt-content");
+  let itemsHtml = payload.items.map(i => {
+    const med = medicinesList.find(m => m.id === i.medicine_id);
+    return `${med ? med.name : 'Item'} x ${i.quantity}`;
+  }).join("\n");
+
+  content.innerHTML = `
+========================================
+             MEDISMART PHARMACY         
+========================================
+Invoice: ${saleData.invoice_no}
+Date:    ${formatDate(saleData.created_at)}
+Client:  ${payload.customer_name}
+Method:  ${payload.payment_method}
+----------------------------------------
+${itemsHtml}
+----------------------------------------
+Net Amount: ${formatCurrency(saleData.net_amount)}
+Discount:   ${formatCurrency(saleData.discount)}
+========================================
+FEFO Stock Deductions Confirmed.
+Thank you for visiting MediSmart!
+  `.trim().replace(/\n/g, "<br>");
+
+  openModal("receipt-modal");
+}
+
+document.addEventListener("DOMContentLoaded", loadPOSData);
+</script>
+{% endblock %}

@@ -17,6 +17,8 @@ from medismart.api.routes_inventory import inventory_bp
 from medismart.api.routes_predict import predict_bp
 from medismart.api.routes_expiry import expiry_bp
 from medismart.api.routes_dashboard import dashboard_bp
+from medismart.api.routes_chat import chat_bp
+from medismart.web.views import web_bp
 
 
 def create_app(test_config: dict | None = None) -> Flask:
@@ -60,6 +62,8 @@ def create_app(test_config: dict | None = None) -> Flask:
     app.register_blueprint(predict_bp)
     app.register_blueprint(expiry_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(chat_bp)
+    app.register_blueprint(web_bp)
 
     # Global Health Route
     @app.route("/api/health", methods=["GET"])

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MediSmart{% endblock %} — AI Smart Medical Inventory & Diagnostics</title>
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">⚕</div>
+        <div>
+          <div class="brand-name">MediSmart</div>
+          <div class="brand-tag">AI Smart Inventory</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Operations</div>
+        <a href="{{ url_for('web_bp.dashboard') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('web_bp.inventory') }}" class="nav-link {% if active_page == 'inventory' %}active{% endif %}">
+          <span class="nav-icon">💊</span>
+          <span>Inventory & Batches</span>
+        </a>
+        <a href="{{ url_for('web_bp.pos') }}" class="nav-link {% if active_page == 'pos' %}active{% endif %}">
+          <span class="nav-icon">🛒</span>
+          <span>POS & FEFO Dispense</span>
+        </a>
+        <a href="{{ url_for('web_bp.sales') }}" class="nav-link {% if active_page == 'sales' %}active{% endif %}">
+          <span class="nav-icon">📋</span>
+          <span>Sales & Invoices</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 14px;">AI Subsystems</div>
+        <a href="{{ url_for('web_bp.expiry') }}" class="nav-link {% if active_page == 'expiry' %}active{% endif %}">
+          <span class="nav-icon">⚠️</span>
+          <span>Expiry Risk AI</span>
+        </a>
+        <a href="{{ url_for('web_bp.predict') }}" class="nav-link {% if active_page == 'predict' %}active{% endif %}">
+          <span class="nav-icon">🩺</span>
+          <span>Disease Diagnosis AI</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div>MediSmart System v1.0</div>
+        <div style="font-size: 10px; color: #475569; margin-top: 2px;">Zero-Cost Open Source Stack</div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <!-- Top Navigation Header -->
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1>{% block page_title %}Pharmacy Dashboard{% endblock %}</h1>
+        </div>
+
+        <div class="topbar-actions">
+          <!-- Live Alert Badges -->
+          <a href="{{ url_for('web_bp.expiry') }}" style="text-decoration: none;">
+            <div id="topbar-near-expiry-badge" class="badge-counter" title="Near-expiry batches requiring action">
+              ⏳ 0 Near Expiry
+            </div>
+          </a>
+
+          <a href="{{ url_for('web_bp.inventory') }}" style="text-decoration: none;">
+            <div id="topbar-low-stock-badge" class="badge-counter" title="Medicines below minimum stock alert">
+              📦 0 Low Stock
+            </div>
+          </a>
+
+          <!-- User Profile / Session -->
+          {% if current_user.is_authenticated %}
+            <div class="user-profile">
+              <div class="user-avatar">{{ current_user.username[:1].upper() }}</div>
+              <div>
+                <div style="font-weight: 700; font-size: 13px;">{{ current_user.full_name or current_user.username }}</div>
+                <div style="font-size: 11px; color: var(--primary); font-weight: 600; text-transform: uppercase;">{{ current_user.role }}</div>
+              </div>
+            </div>
+          {% else %}
+            <a href="{{ url_for('web_bp.login') }}" class="btn btn-outline btn-sm">Sign In</a>
+          {% endif %}
+        </div>
+      </header>
+
+      <!-- View Content Body -->
+      <main class="content-area">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <!-- Floating AI Assistant Chatbot -->
+  <div class="chatbot-widget">
+    <div id="chatbot-window" class="chat-window">
+      <div class="chat-header">
+        <div class="chat-header-title">
+          <span>🤖</span>
+          <span>MediSmart AI Assistant</span>
+        </div>
+        <button onclick="toggleChatbot()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <div id="chatbot-body" class="chat-body">
+        <div class="chat-msg bot">
+          Hello! I am your <strong>MediSmart AI Assistant</strong>. Ask me about:<br>
+          • <em>"Stock of Paracetamol"</em><br>
+          • <em>"Batches expiring this month"</em><br>
+          • <em>"Doctor to consult for Diabetes"</em><br>
+          • <em>"Explain FEFO dispensing"</em>
+        </div>
+      </div>
+      <div class="chat-footer">
+        <input type="text" id="chat-user-input" class="chat-input" placeholder="Type an inventory or clinical query..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button class="btn btn-primary btn-sm" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+    <button class="chatbot-toggle-btn" onclick="toggleChatbot()" title="Open AI Pharmacy Assistant">
+      💬
+    </button>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

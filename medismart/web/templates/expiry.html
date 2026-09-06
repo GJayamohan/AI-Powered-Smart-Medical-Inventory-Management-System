@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}Expiry Risk Prediction{% endblock %}
+{% block page_title %}AI Expiry Risk Prediction & Near-Expiry Batches{% endblock %}
+
+{% block content %}
+<!-- Top Alert Banner -->
+<div class="card" style="border-left: 4px solid var(--critical); background: linear-gradient(135deg, #fff, #fef2f2);">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <h2 style="font-size: 16px; font-weight: 700; color: #991b1b; display: flex; align-items: center; gap: 8px;">
+        <span>⚠️</span>
+        <span>AI Expiry Risk Prediction Engine (Model 2b & LSTMs)</span>
+      </h2>
+      <p style="font-size: 13px; color: #7f1d1d; margin-top: 4px;">
+        Identifies pharmaceutical batches likely to remain unused until expiry based on rolling consumption velocity and stock cover ratio.
+      </p>
+    </div>
+    <button class="btn btn-primary" onclick="assessAllBatches()">
+      <span>🤖</span>
+      <span>Run Live AI Assessment On All Batches</span>
+    </button>
+  </div>
+</div>
+
+<!-- KPI Cards Grid -->
+<div class="stats-grid">
+  <div class="stat-card danger">
+    <div>
+      <div class="stat-title">Critical Risk Batches</div>
+      <div class="stat-val" style="color: var(--critical);" id="exp-critical-count">--</div>
+      <div class="stat-desc">Risk score ≥ 76 / High write-off</div>
+    </div>
+    <div class="stat-icon">🚨</div>
+  </div>
+
+  <div class="stat-card warning">
+    <div>
+      <div class="stat-title">High Risk Batches</div>
+      <div class="stat-val" style="color: #c2410c;" id="exp-high-count">--</div>
+      <div class="stat-desc">Risk score 51 - 75 / Low cover ratio</div>
+    </div>
+    <div class="stat-icon">⚠️</div>
+  </div>
+
+  <div class="stat-card">
+    <div>
+      <div class="stat-title">Near-Expiry Warning</div>
+      <div class="stat-val" style="color: var(--warning);" id="exp-near-count">--</div>
+      <div class="stat-desc">Expiring within 30 calendar days</div>
+    </div>
+    <div class="stat-icon">⏳</div>
+  </div>
+
+  <div class="stat-card info">
+    <div>
+      <div class="stat-title">Total Value at Risk</div>
+      <div class="stat-val" id="exp-var-total">Rs 0.00</div>
+      <div class="stat-desc">Projected unsold stock value</div>
+    </div>
+    <div class="stat-icon">📉</div>
+  </div>
+</div>
+
+<!-- Expiry Table with Filter Controls -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Inventory Batches with AI Risk Scoring</div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <label class="form-label" style="margin: 0; font-size: 12px;">Filter Risk:</label>
+      <select id="filter-risk" class="form-control" style="width: 140px; padding: 4px 8px;" onchange="filterBatches()">
+        <option value="ALL">All Buckets</option>
+        <option value="CRITICAL">🚨 Critical Risk</option>
+        <option value="HIGH">⚠️ High Risk</option>
+        <option value="WATCH">🔶 Watch</option>
+        <option value="SAFE">🟢 Safe</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table" id="expiry-batches-table">
+      <thead>
+        <tr>
+          <th>Batch Number</th>
+          <th>Medicine</th>
+          <th>Expiry Date</th>
+          <th>Days Left</th>
+          <th>Stock Left</th>
+          <th>Cover Ratio</th>
+          <th>AI Risk Score</th>
+          <th>Risk Bucket</th>
+          <th>Value at Risk</th>
+          <th>AI Action Recommendation</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="expiry-batches-tbody">
+        <tr><td colspan="11" style="text-align: center; color: var(--text-muted);">Loading batch risk ratings...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Demand Forecasting with LSTM Section -->
+<div class="card" style="margin-top: 24px;">
+  <div class="card-header">
+    <div>
+      <div class="card-title">📈 Therapeutic Demand Forecasting (14-Day LSTM Model 2a)</div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+        Predicts future consumption per drug group to determine whether stock will be depleted before expiry.
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <select id="forecast-group-select" class="form-control" style="width: 260px;">
+        <option value="M01AB">M01AB — Diclofenac / Anti-inflammatory</option>
+        <option value="M01AE">M01AE — Ibuprofen / Anti-inflammatory</option>
+        <option value="N02BA">N02BA — Aspirin / Analgesics</option>
+        <option value="N02BE" selected>N02BE — Paracetamol (Fast Mover)</option>
+        <option value="N05B">N05B — Anxiolytics</option>
+        <option value="N05C">N05C — Sedatives & Hypnotics</option>
+        <option value="R03">R03 — Asthma / COPD (Winter Peak)</option>
+        <option value="R06">R06 — Antihistamines (Spring Peak)</option>
+      </select>
+      <button class="btn btn-outline" onclick="runDemandForecast()">Forecast Demand</button>
+    </div>
+  </div>
+
+  <div style="height: 280px; position: relative;">
+    <canvas id="forecastChart"></canvas>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let allBatches = [];
+let forecastChartInstance = null;
+
+async function loadExpiryPageData() {
+  await loadAnalyticsCards();
+  await loadBatches();
+  runDemandForecast(); // Initial forecast on load
+}
+
+async function loadAnalyticsCards() {
+  try {
+    const res = await fetch("/api/expiry/analytics");
+    const data = await res.json();
+    if (!data.success) return;
+
+    document.getElementById("exp-critical-count").textContent = data.risk_breakdown.CRITICAL || 0;
+    document.getElementById("exp-high-count").textContent = data.risk_breakdown.HIGH || 0;
+    document.getElementById("exp-near-count").textContent = data.near_expired_count || 0;
+    document.getElementById("exp-var-total").textContent = formatCurrency(data.total_value_at_risk);
+  } catch (err) {
+    console.error("Analytics error:", err);
+  }
+}
+
+async function loadBatches() {
+  try {
+    const res = await fetch("/api/inventory/batches");
+    const data = await res.json();
+    if (!data.success) return;
+
+    allBatches = data.batches || [];
+    renderBatchesTable(allBatches);
+  } catch (err) {
+    console.error("Load batches error:", err);
+  }
+}
+
+function renderBatchesTable(batches) {
+  const tbody = document.getElementById("expiry-batches-tbody");
+  tbody.innerHTML = "";
+
+  if (batches.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: var(--text-muted);">No batches match filter.</td></tr>`;
+    return;
+  }
+
+  // Sort batches: Near-expiry and higher risk first
+  const sorted = [...batches].sort((a, b) => a.days_to_expiry - b.days_to_expiry || b.risk_score - a.risk_score);
+
+  sorted.forEach(b => {
+    const tr = document.createElement("tr");
+    const badgeClass = b.risk_bucket === 'CRITICAL' ? 'badge-critical' : b.risk_bucket === 'HIGH' ? 'badge-high' : b.risk_bucket === 'WATCH' ? 'badge-watch' : 'badge-safe';
+    
+    // Dynamic recommendation based on bucket
+    let recommendation = "Standard FEFO dispensing.";
+    if (b.days_to_expiry <= 0) {
+      recommendation = "Expired. Quarantine immediately for safe disposal.";
+    } else if (b.risk_bucket === 'CRITICAL') {
+      recommendation = "High write-off risk! Apply 30% discount or return to supplier.";
+    } else if (b.risk_bucket === 'HIGH') {
+      recommendation = "Stock cover exceeds remaining days. Prioritize at front of shelf.";
+    } else if (b.risk_bucket === 'WATCH') {
+      recommendation = "Monitor sales velocity weekly.";
+    }
+
+    tr.innerHTML = `
+      <td><code>${b.batch_number}</code></td>
+      <td><strong>${b.medicine_name}</strong> <span class="badge badge-active" style="font-size:9px;">${b.atc_group}</span></td>
+      <td>${formatDate(b.expiry_date)}</td>
+      <td>
+        <span style="font-weight: 800; color: ${b.days_to_expiry <= 30 ? 'var(--critical)' : b.days_to_expiry <= 90 ? 'var(--warning)' : '#10b981'};">
+          ${b.days_to_expiry} days
+        </span>
+      </td>
+      <td><strong>${b.quantity_remaining}</strong> / ${b.quantity_received}</td>
+      <td><code>${(b.quantity_remaining / 4.0).toFixed(1)}x</code></td>
+      <td>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="flex: 1; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; width: 60px;">
+            <div style="width: ${b.risk_score}%; height: 100%; background: ${b.risk_score >= 75 ? '#ef4444' : b.risk_score >= 50 ? '#f97316' : '#10b981'};"></div>
+          </div>
+          <span style="font-weight: 700; font-size: 11px;">${b.risk_score}</span>
+        </div>
+      </td>
+      <td><span class="badge ${badgeClass}">${b.risk_bucket}</span></td>
+      <td><span style="color: var(--critical); font-weight: 700;">${formatCurrency(b.value_at_risk)}</span></td>
+      <td style="font-size: 12px; color: var(--text-muted); max-width: 220px;">${recommendation}</td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="assessSingleBatch(${b.id})" title="Re-evaluate with AI">🤖 Re-Score</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterBatches() {
+  const bucket = document.getElementById("filter-risk").value;
+  if (bucket === "ALL") {
+    renderBatchesTable(allBatches);
+  } else {
+    const filtered = allBatches.filter(b => b.risk_bucket === bucket);
+    renderBatchesTable(filtered);
+  }
+}
+
+async function assessSingleBatch(batchId) {
+  try {
+    const res = await fetch(`/api/expiry/assess-batch/${batchId}`, { method: "POST" });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`Batch #${data.batch_number} re-evaluated: Risk ${data.assessment.risk_score} (${data.assessment.risk_bucket})`, "success");
+      loadExpiryPageData();
+    } else {
+      showToast(data.error || "Assessment failed", "danger");
+    }
+  } catch (err) {
+    showToast("Server error scoring batch", "danger");
+  }
+}
+
+async function assessAllBatches() {
+  try {
+    showToast("Running AI risk assessment on all batches...", "info");
+    const res = await fetch("/api/expiry/assess-all", { method: "POST" });
+    const data = await res.json();
+    if (data.success) {
+      showToast(data.message, "success");
+      loadExpiryPageData();
+    }
+  } catch (err) {
+    showToast("Assessment failed", "danger");
+  }
+}
+
+async function runDemandForecast() {
+  const atc = document.getElementById("forecast-group-select").value;
+  try {
+    const res = await fetch(`/api/expiry/forecast/${atc}?days=14`);
+    const data = await res.json();
+    if (!data.success) return;
+
+    const labels = data.forecast.map(f => `Day +${f.day_ahead}`);
+    const units = data.forecast.map(f => f.projected_units);
+
+    const ctx = document.getElementById("forecastChart").getContext("2d");
+    if (forecastChartInstance) forecastChartInstance.destroy();
+
+    forecastChartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: `Projected Daily Consumption (${atc})`,
+          data: units,
+          borderColor: "#0f766e",
+          backgroundColor: "rgba(15, 118, 110, 0.08)",
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2,
+          pointRadius: 4,
+          pointBackgroundColor: "#0f766e",
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: "Units per Day" },
+            grid: { color: "#f1f5f9" }
+          },
+          x: { grid: { display: false } }
+        },
+        plugins: {
+          legend: { position: "top" }
+        }
+      }
+    });
+  } catch (err) {
+    console.error("Demand forecast error:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadExpiryPageData);
+</script>
+{% endblock %}

@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Prediction & Clinical Recommendation{% endblock %}
+{% block page_title %}Deep Learning Clinical Decision Support{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px;">
+  <!-- Left Column: Diagnostic Consultation Input Form -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Patient Intake & Clinical Signs</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Enter customer-reported symptoms and quantitative lab vitals</div>
+      </div>
+      <!-- 1-Click Worked Example Button -->
+      <button class="btn btn-outline btn-sm" onclick="loadWorkedExample()" title="Click to test the project brief's worked example (Age 45, Glucose 180, BMI 29, BP 140/90)">
+        ⚡ Load Worked Example
+      </button>
+    </div>
+
+    <form id="diagnosis-form" onsubmit="runDiagnosis(event)">
+      <!-- Patient Information -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+        <div class="form-group">
+          <label class="form-label">Patient Name</label>
+          <input type="text" id="patient-name" class="form-control" placeholder="e.g. Rajesh Sharma" value="Rajesh Sharma">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Age *</label>
+          <input type="number" id="patient-age" class="form-control" required placeholder="45" value="45">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gender</label>
+          <select id="patient-gender" class="form-control">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quantitative Vitals -->
+      <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 16px;">
+        <div style="font-weight: 700; font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">
+          Quantitative Clinical Vitals
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div class="form-group" style="margin: 0;">
+            <label class="form-label">Blood Glucose (mg/dL)</label>
+            <input type="number" id="vital-glucose" class="form-control" placeholder="e.g. 180" step="0.1">
+            <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Normal: 70–125 mg/dL</div>
+          </div>
+          <div class="form-group" style="margin: 0;">
+            <label class="form-label">Blood Pressure (mmHg)</label>
+            <input type="text" id="vital-bp" class="form-control" placeholder="e.g. 140/90">
+            <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Normal: 120/80 mmHg</div>
+          </div>
+          <div class="form-group" style="margin: 0;">
+            <label class="form-label">BMI (kg/m²)</label>
+            <input type="number" id="vital-bmi" class="form-control" placeholder="e.g. 29.0" step="0.1">
+            <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Normal: 18.5–24.9</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Symptoms Selector -->
+      <div class="form-group">
+        <label class="form-label" style="display: flex; justify-content: space-between;">
+          <span>Reported Symptoms (Multi-Select) *</span>
+          <span id="symptoms-count-badge" style="font-weight: 400; color: var(--primary);">0 selected</span>
+        </label>
+        
+        <!-- Search filter for symptoms -->
+        <input type="text" id="symptom-search" class="form-control" placeholder="Type to search symptoms (e.g. thirst, urination, fever, chest pain)..." onkeyup="filterSymptomOptions()">
+
+        <!-- Symptom Pills / Selection Area -->
+        <div id="symptoms-container" style="max-height: 180px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px; margin-top: 8px; background: #fff; display: flex; flex-wrap: wrap; gap: 6px;">
+          <div style="font-size: 12px; color: var(--text-muted); padding: 10px;">Loading symptom database...</div>
+        </div>
+
+        <!-- Quick selection chips -->
+        <div style="margin-top: 10px;">
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Quick Common Symptoms:</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleSymptom('polyuria')">+ Frequent Urination</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleSymptom('excessive_hunger')">+ Increased Thirst/Hunger</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleSymptom('fatigue')">+ Fatigue</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleSymptom('weight_loss')">+ Weight Loss</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleSymptom('chest_pain')">+ Chest Pain (🚨)</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleSymptom('high_fever')">+ High Fever</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleSymptom('cough')">+ Cough</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button type="button" class="btn btn-outline" onclick="resetDiagnosisForm()">Clear</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit-diag" style="min-width: 180px;">
+          🩺 Run AI Disease Prediction
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Right Column: AI Prediction & Clinical Recommendation Output -->
+  <div>
+    <!-- Placeholder before diagnosis -->
+    <div id="diag-placeholder" class="card" style="text-align: center; padding: 48px 24px; color: var(--text-muted);">
+      <div style="font-size: 48px; margin-bottom: 12px;">🩺</div>
+      <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">AI Clinical Decision Support</h3>
+      <p style="font-size: 13px; max-width: 320px; margin: 0 auto;">
+        Enter patient vitals and symptoms on the left or click <strong>"Load Worked Example"</strong> to generate deep learning predictions, medication suggestions, and specialist doctor referrals.
+      </p>
+    </div>
+
+    <!-- Active Result Box (Hidden initially) -->
+    <div id="diag-result-card" class="result-box" style="display: none;">
+      <!-- Emergency Banner (Only shown if red flags triggered) -->
+      <div id="emergency-banner" class="emergency-banner" style="display: none;">
+        <span style="font-size: 20px;">🚨</span>
+        <div>
+          <div>EMERGENCY RED-FLAG DETECTED</div>
+          <div style="font-weight: 400; font-size: 12px;" id="emergency-symptoms-text"></div>
+        </div>
+      </div>
+
+      <!-- Top Result Header -->
+      <div class="result-header">
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Predicted Condition</div>
+          <h2 id="res-condition" style="font-size: 22px; font-weight: 800; color: var(--primary);">--</h2>
+          <div id="res-urgency-badge" class="badge badge-watch" style="margin-top: 4px;">--</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Model Confidence</div>
+          <div id="res-confidence" class="confidence-gauge">--%</div>
+        </div>
+      </div>
+
+      <!-- Clinical Overview -->
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">About Condition:</div>
+        <p id="res-description" style="font-size: 13px; color: var(--text-muted); line-height: 1.4;"></p>
+      </div>
+
+      <!-- Medication Recommendation Card -->
+      <div style="background: #fff; border: 1px solid #ccfbf1; border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 6px;">
+          💊 Recommended Medication Class
+        </div>
+        <div id="res-medications" style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">--</div>
+        <div style="font-size: 12px; color: var(--text-muted);">
+          First-line Regimen: <strong id="res-first-line" style="color: var(--text-main);">--</strong>
+        </div>
+      </div>
+
+      <!-- Specialist Referral Card -->
+      <div style="background: #fff; border: 1px solid #e0f2fe; border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--secondary); text-transform: uppercase; margin-bottom: 6px;">
+          👨‍⚕️ Specialist to Consult
+        </div>
+        <div id="res-specialist" style="font-weight: 700; font-size: 15px; color: #0369a1;">--</div>
+        <div id="res-department" style="font-size: 12px; color: var(--text-muted);">--</div>
+      </div>
+
+      <!-- Precautions & Warning Signs -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+        <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Precautions</div>
+          <ul id="res-precautions" style="font-size: 12px; padding-left: 16px; color: var(--text-muted);"></ul>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--critical); margin-bottom: 4px;">Warning Signs</div>
+          <ul id="res-warnings" style="font-size: 12px; padding-left: 16px; color: var(--text-muted);"></ul>
+        </div>
+      </div>
+
+      <!-- Medical Disclaimer -->
+      <div style="font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 12px; line-height: 1.4;">
+        <span style="font-weight: 700;">⚕ Medical Disclaimer:</span>
+        <span id="res-disclaimer"></span>
+      </div>
+
+      <!-- Action Footer -->
+      <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print Summary</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let allSymptoms = [];
+let selectedSymptoms = new Set();
+
+async function loadSymptomCatalogue() {
+  try {
+    const res = await fetch("/api/predict/symptoms");
+    const data = await res.json();
+    if (!data.success) return;
+
+    allSymptoms = data.symptoms || [];
+    renderSymptomCheckboxes(allSymptoms);
+  } catch (err) {
+    console.error("Load symptoms error:", err);
+  }
+}
+
+function renderSymptomCheckboxes(symptoms) {
+  const container = document.getElementById("symptoms-container");
+  container.innerHTML = "";
+
+  symptoms.forEach(s => {
+    const isSelected = selectedSymptoms.has(s.id);
+    const chip = document.createElement("div");
+    chip.id = `sym-chip-${s.id}`;
+    chip.className = `btn btn-sm ${isSelected ? 'btn-primary' : 'btn-outline'}`;
+    chip.style.cssText = "font-size: 11px; padding: 3px 8px; cursor: pointer; user-select: none;";
+    chip.innerHTML = `${s.is_emergency ? '🚨 ' : ''}${s.name}`;
+    chip.onclick = () => toggleSymptom(s.id);
+    container.appendChild(chip);
+  });
+
+  updateSelectedCounter();
+}
+
+function toggleSymptom(symptomId) {
+  if (selectedSymptoms.has(symptomId)) {
+    selectedSymptoms.delete(symptomId);
+  } else {
+    selectedSymptoms.add(symptomId);
+  }
+
+  // Update chip style
+  const chip = document.getElementById(`sym-chip-${symptomId}`);
+  if (chip) {
+    const isSel = selectedSymptoms.has(symptomId);
+    chip.className = `btn btn-sm ${isSel ? 'btn-primary' : 'btn-outline'}`;
+  }
+
+  updateSelectedCounter();
+}
+
+function updateSelectedCounter() {
+  document.getElementById("symptoms-count-badge").textContent = `${selectedSymptoms.size} selected`;
+}
+
+function filterSymptomOptions() {
+  const q = document.getElementById("symptom-search").value.toLowerCase();
+  const filtered = allSymptoms.filter(s => s.name.toLowerCase().includes(q) || s.id.includes(q));
+  renderSymptomCheckboxes(filtered);
+}
+
+// 1-Click Load Worked Example from Project Brief
+function loadWorkedExample() {
+  document.getElementById("patient-name").value = "Sunita Rao";
+  document.getElementById("patient-age").value = "45";
+  document.getElementById("patient-gender").value = "female";
+
+  // Worked Example Vitals: Glucose 180, BMI 29, BP 140/90
+  document.getElementById("vital-glucose").value = "180";
+  document.getElementById("vital-bmi").value = "29.0";
+  document.getElementById("vital-bp").value = "140/90";
+
+  // Worked Example Symptoms: frequent urination, increased thirst/hunger, fatigue, weight loss
+  selectedSymptoms.clear();
+  ["polyuria", "excessive_hunger", "fatigue", "weight_loss", "irregular_sugar_level"].forEach(s => selectedSymptoms.add(s));
+
+  renderSymptomCheckboxes(allSymptoms);
+  showToast("Loaded worked example vitals (Age: 45, Glucose: 180, BMI: 29, BP: 140/90) and symptoms!", "info");
+}
+
+function resetDiagnosisForm() {
+  document.getElementById("diagnosis-form").reset();
+  selectedSymptoms.clear();
+  renderSymptomCheckboxes(allSymptoms);
+  document.getElementById("diag-placeholder").style.display = "block";
+  document.getElementById("diag-result-card").style.display = "none";
+}
+
+async function runDiagnosis(e) {
+  e.preventDefault();
+
+  const symptomsArr = Array.from(selectedSymptoms);
+  const glucose = document.getElementById("vital-glucose").value;
+  const bp = document.getElementById("vital-bp").value;
+  const bmi = document.getElementById("vital-bmi").value;
+
+  if (symptomsArr.length === 0 && !glucose && !bp) {
+    showToast("Please provide either symptoms or laboratory vitals.", "danger");
+    return;
+  }
+
+  const payload = {
+    patient: {
+      name: document.getElementById("patient-name").value,
+      age: parseInt(document.getElementById("patient-age").value),
+      gender: document.getElementById("patient-gender").value,
+    },
+    vitals: {
+      glucose: glucose ? parseFloat(glucose) : null,
+      blood_pressure: bp ? bp : null,
+      bmi: bmi ? parseFloat(bmi) : null,
+    },
+    symptoms: symptomsArr,
+  };
+
+  const btn = document.getElementById("btn-submit-diag");
+  btn.disabled = true;
+  btn.textContent = "Analyzing Deep Learning Models...";
+
+  try {
+    const res = await fetch("/api/predict/diagnose", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    btn.disabled = false;
+    btn.textContent = "🩺 Run AI Disease Prediction";
+
+    if (data.success) {
+      displayDiagnosisResult(data.result);
+    } else {
+      showToast(data.error || "Diagnosis failed", "danger");
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = "🩺 Run AI Disease Prediction";
+    showToast("Server error communicating with AI model", "danger");
+  }
+}
+
+function displayDiagnosisResult(res) {
+  document.getElementById("diag-placeholder").style.display = "none";
+  const card = document.getElementById("diag-result-card");
+  card.style.display = "block";
+
+  // Emergency Banner
+  const emergBanner = document.getElementById("emergency-banner");
+  if (res.is_emergency) {
+    emergBanner.style.display = "flex";
+    document.getElementById("emergency-symptoms-text").textContent = `Critical red-flag symptoms present: ${res.emergency_symptoms.join(", ")}. Immediate medical attention required.`;
+  } else {
+    emergBanner.style.display = "none";
+  }
+
+  document.getElementById("res-condition").textContent = res.predicted_condition;
+  document.getElementById("res-confidence").textContent = `${res.model_confidence}%`;
+
+  const urgencyBadge = document.getElementById("res-urgency-badge");
+  urgencyBadge.textContent = `${res.urgency.toUpperCase()} URGENCY`;
+  urgencyBadge.className = `badge ${res.urgency === 'critical' ? 'badge-critical' : res.urgency === 'high' ? 'badge-high' : 'badge-watch'}`;
+
+  document.getElementById("res-description").textContent = res.about_condition;
+  document.getElementById("res-medications").textContent = res.recommended_medication_classes.join(", ");
+  document.getElementById("res-first-line").textContent = res.first_line_treatment;
+  document.getElementById("res-specialist").textContent = res.specialist_to_consult;
+  document.getElementById("res-department").textContent = `Department: ${res.department}`;
+
+  // Precautions list
+  const precUl = document.getElementById("res-precautions");
+  precUl.innerHTML = (res.precautions || []).map(p => `<li>${p}</li>`).join("");
+
+  // Warning signs list
+  const warnUl = document.getElementById("res-warnings");
+  warnUl.innerHTML = (res.warning_signs || []).map(w => `<li>${w}</li>`).join("");
+
+  document.getElementById("res-disclaimer").textContent = res.disclaimer;
+
+  // Scroll smoothly to result
+  card.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.addEventListener("DOMContentLoaded", loadSymptomCatalogue);
+</script>
+{% endblock %}
