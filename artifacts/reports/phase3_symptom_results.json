@@ -1,0 +1,81 @@
+{
+  "task": "symptom_disease_classification",
+  "n_classes": 41,
+  "splits": {
+    "train": 7880,
+    "val": 795,
+    "test": 810
+  },
+  "results": [
+    {
+      "accuracy": 0.9469135802469136,
+      "precision": 0.9422042510300943,
+      "recall": 0.945528455284553,
+      "f1": 0.9420282141173252,
+      "roc_auc": 0.9993511078071593,
+      "top3_accuracy": 0.9901234567901235,
+      "model": "Deep Neural Network",
+      "train_seconds": 44.0
+    },
+    {
+      "accuracy": 0.9493827160493827,
+      "precision": 0.9452441030903392,
+      "recall": 0.9463414634146341,
+      "f1": 0.9439068626270646,
+      "roc_auc": 0.9994842098638691,
+      "top3_accuracy": 0.9938271604938271,
+      "model": "Naive Bayes",
+      "train_seconds": 0.0
+    },
+    {
+      "accuracy": 0.7074074074074074,
+      "precision": 0.6946362368955664,
+      "recall": 0.6991869918699186,
+      "f1": 0.6887527628525718,
+      "roc_auc": 0.8459380469711809,
+      "top3_accuracy": 0.7185185185185186,
+      "model": "Decision Tree",
+      "train_seconds": 0.3
+    },
+    {
+      "accuracy": 0.9580246913580247,
+      "precision": 0.9541554894365905,
+      "recall": 0.9593495934959352,
+      "f1": 0.9557799316059665,
+      "roc_auc": 0.9995124507848853,
+      "top3_accuracy": 0.9950617283950617,
+      "model": "Logistic Regression",
+      "train_seconds": 0.7
+    },
+    {
+      "accuracy": 0.9543209876543209,
+      "precision": 0.9524762898507517,
+      "recall": 0.9512195121951219,
+      "f1": 0.9498217514383851,
+      "roc_auc": 0.9994836788716217,
+      "top3_accuracy": 0.9975308641975309,
+      "model": "SVM (RBF)",
+      "train_seconds": 29.9
+    },
+    {
+      "accuracy": 0.937037037037037,
+      "precision": 0.9322686512593541,
+      "recall": 0.934959349593496,
+      "f1": 0.9313453736223575,
+      "roc_auc": 0.9991577479635464,
+      "top3_accuracy": 0.9950617283950617,
+      "model": "Random Forest",
+      "train_seconds": 4.8
+    },
+    {
+      "accuracy": 0.9320987654320988,
+      "precision": 0.9238621399585261,
+      "recall": 0.9357723577235773,
+      "f1": 0.9283068557285528,
+      "roc_auc": 0.9988363993219034,
+      "top3_accuracy": 0.9950617283950617,
+      "model": "Gradient Boosting",
+      "train_seconds": 116.2
+    }
+  ]
+}
